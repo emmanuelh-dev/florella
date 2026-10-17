@@ -2,13 +2,32 @@
 import "../styles/global.css";
 
 const {
-  title = "Florella · Flores que honran su memoria",
-  description = "Flores que honran su memoria. Arreglos funerarios con entrega en Monterrey y zona conurbada.",
+  title = "Florella · Florería en Monterrey",
+  description = "Arreglos, bouquets y ofrendas con entrega el mismo día en Monterrey y área metropolitana. Pide por WhatsApp.",
+  ogType = "website",
 } = Astro.props;
 
 const ruta = Astro.url.pathname;
 const enInicio = ruta === "/";
 const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
+
+// SEO: URLs absolutas para canonical y Open Graph (Astro.site sale de astro.config).
+const base = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(Astro.url.pathname, base).href;
+const ogImagen = new URL("/imagenes/cabecera.jpg", base).href;
+
+// Datos estructurados (schema.org) de la florería.
+const negocio = {
+  "@context": "https://schema.org",
+  "@type": "Florist",
+  name: "Florella Eventos y detalles",
+  url: base.href,
+  image: ogImagen,
+  telephone: "+528142547600",
+  areaServed: "Monterrey y área metropolitana",
+  priceRange: "$$",
+  address: { "@type": "PostalAddress", addressLocality: "Monterrey", addressRegion: "NL", addressCountry: "MX" },
+};
 ---
 
 <!doctype html>
@@ -16,10 +35,28 @@ const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#8F4359" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#8F4359" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / redes sociales -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Florella" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImagen} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImagen} />
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json" set:html={JSON.stringify(negocio)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
