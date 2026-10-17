@@ -5,75 +5,222 @@ import { getCategoriasSoloOfrendas } from '../../data/catalogo.js';
 
 const categorias = await getCategoriasSoloOfrendas();
 const total = categorias.reduce((n, cat) => n + cat.productos.length, 0);
+
+const minPrecio = (cat) =>
+  cat.productos.reduce((min, p) => (p.precio < min ? p.precio : min), Infinity);
+const portada = (cat) => (cat.productos.find((p) => p.imagen) || {}).imagen || null;
+
+const enlaces = categorias.map((cat) => ({
+  slug: cat.slug,
+  nombre: cat.nombre,
+  desde: minPrecio(cat),
+  imagen: portada(cat),
+}));
+
+const PERSONALIZADO =
+  'https://wa.me/528142547600?text=' +
+  encodeURIComponent('Hola, quiero un pedido personalizado de Solo Ofrendas.');
 ---
 
 <Layout
   title="Solo Ofrendas · Florella"
-  description="Catálogo Solo Ofrendas: arreglos fúnebres, coronas y canastillas de peregrinación con entrega en Monterrey."
+  description="Arreglos fúnebres, coronas y canastillas de peregrinación con entrega el mismo día en Monterrey y área metropolitana."
 >
-  <section class="bg-page py-10 sm:py-14">
+  <!-- Franja de servicio -->
+  <section class="border-b border-line bg-ink text-white">
+    <div
+      class="mx-auto grid max-w-6xl gap-1.5 px-4 py-3 text-center text-[11px] font-semibold tracking-[0.14em] uppercase sm:grid-cols-3 sm:px-6"
+    >
+      <span>Servicio a Monterrey y área metropolitana</span>
+      <span class="sm:text-center">Envío express (3 hrs)</span>
+      <span class="sm:text-right">81-4254-7600</span>
+    </div>
+  </section>
+
+  <!-- Hero -->
+  <section
+    aria-labelledby="ofrendas-title"
+    class="relative overflow-hidden border-b border-line bg-white"
+  >
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <img
+        src="/imagenes/hero.jpg"
+        alt=""
+        fetchpriority="high"
+        class="h-full w-full object-cover"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/60 to-white/10"
+      >
+      </div>
+    </div>
+    <div class="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-20">
+      <div class="flex max-w-2xl flex-col items-start gap-5">
+        <span class="text-[11px] font-semibold tracking-[0.24em] text-wine uppercase"
+          >Solo Ofrendas</span
+        >
+        <h1
+          id="ofrendas-title"
+          class="font-serif text-3xl leading-[1.12] font-semibold tracking-tight text-ink sm:text-4xl lg:text-[3rem]"
+        >
+          Te acompañamos en cada momento con flores que hablan desde el corazón
+        </h1>
+        <p class="text-sm leading-relaxed text-muted sm:text-base">
+          Comprometidos con tu tranquilidad en momentos difíciles. Arreglos
+          fúnebres de alta calidad, diseñados con respeto y empatía.
+        </p>
+        <a
+          href="#catalogo"
+          class="inline-flex items-center gap-2 rounded-none bg-wine px-6 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
+        >
+          Hacer pedido <svg class="h-[15px] w-[15px]" aria-hidden="true"
+            ><use href="#i-arrow"></use></svg
+          >
+        </a>
+        <p class="text-[11.5px] text-muted">
+          Si requiere factura se agrega el IVA al costo TOTAL del servicio.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloque de acompañamiento -->
+  <section class="border-b border-line bg-white py-12 sm:py-16">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6">
+      <h2
+        class="font-serif text-2xl leading-snug font-semibold text-ink sm:text-3xl"
+      >
+        Aunque la distancia los separe, la mejor forma de estar presente es con
+        un detalle lleno de corazón
+      </h2>
+      <p class="mt-4 text-sm leading-relaxed text-muted sm:text-base">
+        En Solo Ofrenda nos encargamos de todo: con discreción, respeto y la
+        rapidez que este momento exige. Descubre nuestro amplio catálogo de
+        coronas fúnebres, diseñadas para expresar tu cariño y entregadas el
+        mismo día, garantizando que tu mensaje llegue cuando más se necesita.
+      </p>
+    </div>
+  </section>
+
+  <!-- Catálogo: categorías + personalizado -->
+  <section
+    id="catalogo"
+    class="scroll-mt-20 border-b border-line bg-page py-10 sm:py-14"
+  >
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
       <span class="text-[11px] font-semibold tracking-[0.24em] text-wine uppercase"
         >Catálogo</span
       >
       <div class="mt-2 flex flex-wrap items-end justify-between gap-4">
-        <h1
-          class="font-serif text-3xl font-semibold text-ink sm:text-4xl lg:text-5xl"
-        >
-          Solo Ofrendas
-        </h1>
+        <h2 class="font-serif text-3xl font-semibold text-ink sm:text-4xl">
+          Nuestras ofrendas
+        </h2>
         <p
           class="text-[12px] font-semibold tracking-[0.12em] text-muted uppercase"
         >
           {total} arreglos · {categorias.length} categorías
         </p>
       </div>
-      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-        Todo el catálogo, reunido. Filtra por categoría o agrega tus ofrendas y
-        envía tu solicitud por WhatsApp. Entrega en Monterrey y zona conurbada.
-      </p>
 
-      <!-- Nav de categorías: cada una lleva a su página -->
-      <nav aria-label="Categorías" class="mt-6 flex flex-wrap gap-1.5">
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
         {
-          categorias.map((cat) => (
+          enlaces.map((cat) => (
             <a
-              href={`/solo-ofrendas/${cat.slug}`}
-              class="rounded-none border border-line bg-white px-3 py-1.5 text-[12px] font-semibold tracking-[0.06em] text-ink-secondary uppercase transition hover:border-wine hover:text-wine"
+              href={`#seccion-${cat.slug}`}
+              class="group border border-line bg-white transition hover:-translate-y-1 hover:shadow-xl"
             >
-              {cat.nombre}
+              <div class="aspect-[4/3] overflow-hidden bg-card">
+                {cat.imagen ? (
+                  <img
+                    src={cat.imagen}
+                    alt={`${cat.nombre} — Florella`}
+                    loading="lazy"
+                    class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]"
+                  />
+                ) : (
+                  <div class="flex h-full w-full items-center justify-center text-muted-light">
+                    <svg class="h-10 w-10" aria-hidden="true">
+                      <use href="#i-orchid" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+              <div class="flex items-center justify-between gap-3 p-4">
+                <div>
+                  <h3 class="font-serif text-lg text-ink transition group-hover:text-wine">
+                    {cat.nombre}
+                  </h3>
+                  <p class="mt-0.5 text-[12px] text-muted">
+                    Desde {'$' + Number(cat.desde).toLocaleString('es-MX')}
+                  </p>
+                </div>
+                <span class="inline-flex shrink-0 items-center gap-1 text-[11px] font-semibold tracking-[0.1em] text-wine uppercase">
+                  Ver más
+                  <svg class="h-3.5 w-3.5" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </span>
+              </div>
             </a>
           ))
         }
-      </nav>
+      </div>
+
+      <div
+        class="mt-10 flex flex-col items-start justify-between gap-4 border border-line bg-white p-6 sm:flex-row sm:items-center"
+      >
+        <div>
+          <h3 class="font-serif text-xl font-semibold text-ink">
+            ¿Necesitas algo personalizado?
+          </h3>
+          <p class="mt-1 text-sm text-muted">
+            Armamos el arreglo a tu medida y combinación de colores.
+          </p>
+        </div>
+        <a
+          href={PERSONALIZADO}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex shrink-0 items-center gap-2 rounded-none bg-wine px-6 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
+        >
+          <svg class="h-4 w-4" aria-hidden="true"
+            ><use href="#i-whatsapp"></use></svg
+          >
+          Pedidos personalizados
+        </a>
+      </div>
     </div>
   </section>
 
+  <!-- Secciones de productos -->
   {
     categorias.map((cat, i) => (
-      <section class="border-t border-line bg-page py-10 sm:py-12">
+      <section
+        id={`seccion-${cat.slug}`}
+        class="scroll-mt-20 border-b border-line bg-page py-10 sm:py-12"
+      >
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
           <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <span class="text-[11px] font-semibold tracking-[0.24em] text-wine uppercase">
-                Sección {String(i + 1).padStart(2, '0')}
-              </span>
-              <h2 class="mt-1.5 font-serif text-2xl font-semibold text-ink sm:text-3xl">
-                {cat.nombre}
-              </h2>
-            </div>
             <div class="flex items-center gap-4">
-              <span class="text-[12px] font-semibold tracking-[0.1em] text-muted uppercase">
-                {cat.productos.length}{' '}
-                {cat.productos.length === 1 ? 'arreglo' : 'arreglos'}
-              </span>
-              <a
-                href={`/solo-ofrendas/${cat.slug}`}
-                class="inline-flex shrink-0 items-center gap-1 text-[12px] font-semibold tracking-[0.1em] text-wine uppercase transition hover:text-wine-hover"
-              >
-                Ver categoría <svg class="h-3.5 w-3.5" aria-hidden="true"><use href="#i-arrow" /></svg>
-              </a>
+              {portada(cat) && (
+                <img
+                  src={portada(cat)}
+                  alt={cat.nombre}
+                  loading="lazy"
+                  class="h-14 w-14 shrink-0 rounded-none object-cover"
+                />
+              )}
+              <div>
+                <span class="text-[11px] font-semibold tracking-[0.24em] text-wine uppercase">
+                  Sección {String(i + 1).padStart(2, '0')}
+                </span>
+                <h2 class="mt-1.5 font-serif text-2xl font-semibold text-ink sm:text-3xl">
+                  {cat.nombre}
+                </h2>
+              </div>
             </div>
+            <span class="text-[12px] font-semibold tracking-[0.1em] text-muted uppercase">
+              {cat.productos.length}{' '}
+              {cat.productos.length === 1 ? 'arreglo' : 'arreglos'}
+            </span>
           </div>
 
           <div class="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
@@ -87,6 +234,7 @@ const total = categorias.reduce((n, cat) => n + cat.productos.length, 0);
                   alt: `${prod.nombre} — Florella`,
                   occasions: [cat.nombre],
                   disponible: prod.disponible,
+                  cta: 'Hacer pedido',
                 }}
               />
             ))}
