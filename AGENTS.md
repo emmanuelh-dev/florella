@@ -35,6 +35,6 @@ Definidos en `src/data/catalogo.js`, contra la API pública de Mimir:
 ## SEO
 - `title`/`description` por página; canonical, Open Graph, Twitter y JSON-LD en `Layout.astro`.
 - `sitemap.xml` y `robots.txt` se generan en build (`src/pages/*.ts`).
-- Dominio: variable **`SITE_URL`** (por defecto `https://florella.mx` en `astro.config.mjs`). Cámbialo al dominio real.
+- Dominio: variable **`SITE_URL`** (por defecto `https://florellaeventosydetalles.com.mx` en `astro.config.mjs`).
 
 Documentación de Astro: https://docs.astro.build
