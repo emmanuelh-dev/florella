@@ -1,9 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { getCategorias } from '../../data/solo-ofrendas.js';
+import { getCategoriasSoloOfrendas } from '../../data/catalogo.js';
 
-const categorias = await getCategorias();
+const categorias = await getCategoriasSoloOfrendas();
 const total = categorias.reduce((n, cat) => n + cat.productos.length, 0);
 ---
 

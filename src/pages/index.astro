@@ -1,12 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ProductCard from "../components/ProductCard.astro";
-import { SECCIONES } from "../data/articulos.js";
+import { getCategoriasFlorella } from "../data/catalogo.js";
+
+const categorias = await getCategoriasFlorella();
+const total = categorias.reduce((n, cat) => n + cat.productos.length, 0);
 ---
 
 <Layout
-  title="Florella · Flores que honran su memoria"
-  description="Flores que honran su memoria. Arreglos funerarios con entrega en Monterrey y zona conurbada."
+  title="Florella · Flores para cada ocasión"
+  description="Arreglos, bouquets y ofrendas con entrega en Monterrey y zona conurbada. Flores para cumpleaños, aniversarios, condolencias y más."
 >
   <!-- Hero Section -->
   <section
@@ -26,25 +29,26 @@ import { SECCIONES } from "../data/articulos.js";
       </div>
     </div>
     <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-      <!-- Hero Left Content Column -->
       <div class="flex max-w-xl flex-col items-start gap-5">
         <h1
           id="hero-title"
           class="font-serif text-4xl leading-[1.1] font-semibold tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]"
         >
-          Flores que<br />honran su memoria
+          Flores para<br />cada ocasión
         </h1>
         <p class="text-sm leading-relaxed text-muted sm:text-base">
-          Arreglos funerarios con entrega en Monterrey y zona conurbada.<br />
-          Expresa tus condolencias con flores que transmiten respeto, paz y cariño.
+          Arreglos, bouquets y ofrendas con entrega en Monterrey y zona
+          conurbada.<br />
+          Cumpleaños, aniversarios, condolencias y todo lo que quieras expresar
+          con flores.
         </p>
 
         <div class="flex flex-wrap items-center gap-3">
           <a
-            href="#arreglos-funerarios"
+            href="#catalogo"
             class="inline-flex items-center gap-2 rounded-none bg-wine px-6 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
           >
-            Ver arreglos funerarios <svg
+            Ver catálogo <svg
               class="h-[15px] w-[15px]"
               aria-hidden="true"><use href="#i-arrow"></use></svg
             >
@@ -90,218 +94,78 @@ import { SECCIONES } from "../data/articulos.js";
     </div>
   </section>
 
-  <!-- Category Circles Section -->
-  <section
-    id="categorias"
-    aria-label="Categorías de arreglos funerarios"
-    class="border-b border-line bg-page py-8"
-  >
+  <!-- Cabecera del catálogo + navegación por sección -->
+  <section id="catalogo" class="scroll-mt-20 bg-page py-10 sm:py-12">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <div class="grid grid-cols-3 gap-3 sm:grid-cols-6 sm:gap-4">
-        <button
-          type="button"
-          data-occasion="Todas"
-          data-active="true"
-          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-        >
-          <div
-            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
-          >
-            <img
-              src="/imagenes/cat-coronas@2x.png"
-              alt="Coronas funerarias"
-              width="80"
-              height="80"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <span
-            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-            >Coronas</span
-          >
-        </button>
-
-        <button
-          type="button"
-          data-occasion="Arreglos"
-          data-active="false"
-          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-        >
-          <div
-            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
-          >
-            <img
-              src="/imagenes/cat-condolencias@2x.png"
-              alt="Arreglos de condolencias"
-              width="80"
-              height="80"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <span
-            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-            >Arreglos de condolencias</span
-          >
-        </button>
-
-        <button
-          type="button"
-          data-occasion="Cruces"
-          data-active="false"
-          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-        >
-          <div
-            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
-          >
-            <img
-              src="/imagenes/cat-cruces@2x.png"
-              alt="Cruces de flores"
-              width="80"
-              height="80"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <span
-            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-            >Cruces</span
-          >
-        </button>
-
-        <button
-          type="button"
-          data-occasion="Centros"
-          data-active="false"
-          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-        >
-          <div
-            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
-          >
-            <img
-              src="/imagenes/cat-centros@2x.png"
-              alt="Centros funerarios"
-              width="80"
-              height="80"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <span
-            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-            >Centros funerarios</span
-          >
-        </button>
-
-        <button
-          type="button"
-          data-occasion="Ramos"
-          data-active="false"
-          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-        >
-          <div
-            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
-          >
-            <img
-              src="/imagenes/cat-ramos@2x.png"
-              alt="Ramos de condolencias"
-              width="80"
-              height="80"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <span
-            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-            >Ramos</span
-          >
-        </button>
-
-        <button
-          type="button"
-          data-occasion="Plantas"
-          data-active="false"
-          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-        >
-          <div
-            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
-          >
-            <img
-              src="/imagenes/cat-plantas@2x.png"
-              alt="Plantas de paz"
-              width="80"
-              height="80"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <span
-            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-            >Plantas</span
-          >
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Arreglos Funerarios Section -->
-  <section
-    id="arreglos-funerarios"
-    aria-labelledby="funerarios-heading"
-    class="bg-page py-10 sm:py-14"
-  >
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <div class="mb-6 flex items-end justify-between gap-4">
-        <div>
-          <span
-            class="text-[11px] font-semibold tracking-[0.22em] text-wine sm:text-xs"
-            >A R R E G L O S &nbsp; F U N E R A R I O S</span
-          >
-          <h2
-            id="funerarios-heading"
-            class="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl lg:text-4xl"
-          >
-            Un adiós con flores
-          </h2>
-        </div>
-        <a
-          href="#arreglos-funerarios"
-          id="ver-todo-link"
-          class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-wine transition hover:text-wine-hover"
-        >
-          Ver todo <svg class="h-3.5 w-3.5" aria-hidden="true"
-            ><use href="#i-arrow"></use></svg
-          >
-        </a>
-      </div>
-
-      <!-- Grid de productos (tarjeta compartida) -->
-      <div
-        id="product-grid"
-        class="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4"
+      <span class="text-[11px] font-semibold tracking-[0.24em] text-wine uppercase"
+        >Catálogo</span
       >
-        {SECCIONES.flatMap((sec) =>
-          sec.articulos.map((a) => (
-            <ProductCard
-              producto={{
-                id: a.id,
-                nombre: a.nombre,
-                precio: a.precio,
-                imagen: a.imagen,
-                alt: a.alt,
-                occasions: a.occasions,
-              }}
-            />
-          ))
-        )}
-      </div>
-      <div id="empty-products" hidden class="px-4 py-12 text-center">
-        <p class="mb-4 text-base text-muted">
-          No se encontraron arreglos con esa selección.
-        </p>
-        <button
-          type="button"
-          id="reset-empty"
-          class="inline-flex items-center gap-2 rounded-none bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
+      <div class="mt-2 flex flex-wrap items-end justify-between gap-4">
+        <h2 class="font-serif text-3xl font-semibold text-ink sm:text-4xl">
+          Nuestras flores
+        </h2>
+        <p
+          class="text-[12px] font-semibold tracking-[0.12em] text-muted uppercase"
         >
-          Ver todos los arreglos
-        </button>
+          {total} arreglos · {categorias.length} secciones
+        </p>
       </div>
+
+      <nav aria-label="Secciones" class="mt-6 flex flex-wrap gap-1.5">
+        {
+          categorias.map((cat) => (
+            <a
+              href={`#seccion-${cat.slug}`}
+              class="rounded-none border border-line bg-white px-3 py-1.5 text-[12px] font-semibold tracking-[0.06em] text-ink-secondary uppercase transition hover:border-wine hover:text-wine"
+            >
+              {cat.nombre}
+            </a>
+          ))
+        }
+      </nav>
     </div>
   </section>
+
+  <!-- Secciones -->
+  {
+    categorias.map((cat, i) => (
+      <section
+        id={`seccion-${cat.slug}`}
+        class="scroll-mt-20 border-t border-line bg-page py-10 sm:py-12"
+      >
+        <div class="mx-auto max-w-6xl px-4 sm:px-6">
+          <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span class="text-[11px] font-semibold tracking-[0.24em] text-wine uppercase">
+                Sección {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="mt-1.5 font-serif text-2xl font-semibold text-ink sm:text-3xl">
+                {cat.nombre}
+              </h3>
+            </div>
+            <span class="text-[12px] font-semibold tracking-[0.1em] text-muted uppercase">
+              {cat.productos.length}{' '}
+              {cat.productos.length === 1 ? 'arreglo' : 'arreglos'}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+            {cat.productos.map((prod) => (
+              <ProductCard
+                producto={{
+                  id: prod.id,
+                  nombre: prod.nombre,
+                  precio: prod.precio,
+                  imagen: prod.imagen,
+                  alt: `${prod.nombre} — Florella`,
+                  occasions: [cat.nombre],
+                  disponible: prod.disponible,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
 </Layout>

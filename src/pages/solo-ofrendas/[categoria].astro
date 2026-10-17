@@ -1,10 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { getCategorias } from '../../data/solo-ofrendas.js';
+import { getCategoriasSoloOfrendas } from '../../data/catalogo.js';
 
 export async function getStaticPaths() {
-  const categorias = await getCategorias();
+  const categorias = await getCategoriasSoloOfrendas();
   return categorias.map((categoria) => ({
     params: { categoria: categoria.slug },
     props: { categoria },
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { categoria } = Astro.props;
-const categorias = await getCategorias();
+const categorias = await getCategoriasSoloOfrendas();
 ---
 
 <Layout
