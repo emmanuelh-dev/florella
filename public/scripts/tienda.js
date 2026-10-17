@@ -26,8 +26,16 @@
     };
   });
   const productById = new Map(products.map((product) => [product.id, product]));
-  const state = { occasion: 'Todas', maxPrice: 2500, order: 'featured', favoritesOnly: false };
-  const hasPriceFilter = !!$('#max-price');
+  // Filtro de precio: el tope lo define la página (atributo max del slider).
+  const maxPriceInputEl = $('#max-price');
+  const precioMax = maxPriceInputEl ? Number(maxPriceInputEl.max) || 2500 : 2500;
+  const hasPriceFilter = !!maxPriceInputEl;
+  const state = {
+    occasion: 'Todas',
+    maxPrice: maxPriceInputEl ? Number(maxPriceInputEl.value) || precioMax : precioMax,
+    order: 'featured',
+    favoritesOnly: false,
+  };
   const CART_KEY = 'florella-cart-v1';
   const FAVORITES_KEY = 'florella-favorites-v1';
 
@@ -96,12 +104,11 @@
     });
     const maxPriceLabel = $('#max-price-label');
     if (maxPriceLabel) maxPriceLabel.textContent = money(state.maxPrice);
-    const maxPriceEl = $('#max-price');
-    if (maxPriceEl) maxPriceEl.style.setProperty('--range-fill', (state.maxPrice / 2500 * 100) + '%');
+    if (maxPriceInputEl) maxPriceInputEl.style.setProperty('--range-fill', (state.maxPrice / precioMax * 100) + '%');
     const resultsCount = $('#results-count');
     if (resultsCount) resultsCount.textContent = shown + (shown === 1 ? ' arreglo' : ' arreglos') + (state.favoritesOnly ? ' en favoritos' : '');
     const resultsBar = $('#results-bar');
-    if (resultsBar) resultsBar.hidden = state.occasion === 'Todas' && state.maxPrice === 2500 && !state.favoritesOnly && state.order === 'featured';
+    if (resultsBar) resultsBar.hidden = state.occasion === 'Todas' && state.maxPrice === precioMax && !state.favoritesOnly && state.order === 'featured';
     const emptyProducts = $('#empty-products');
     if (emptyProducts) emptyProducts.hidden = shown > 0;
     const favToggleState = $('#favorites-toggle');
@@ -110,9 +117,8 @@
   }
 
   function resetFilters() {
-    Object.assign(state, { occasion: 'Todas', maxPrice: 2500, order: 'featured', favoritesOnly: false });
-    const maxPriceInput = $('#max-price');
-    if (maxPriceInput) maxPriceInput.value = '2500';
+    Object.assign(state, { occasion: 'Todas', maxPrice: precioMax, order: 'featured', favoritesOnly: false });
+    if (maxPriceInputEl) maxPriceInputEl.value = String(precioMax);
     const sortReset = $('#sort');
     if (sortReset) sortReset.value = 'featured';
     applyFilters();
