@@ -9,6 +9,7 @@ const {
   alt = nombre,
   occasions = [],
   disponible = true,
+  cta = 'Agregar',
 } = producto;
 const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
 ---
@@ -73,7 +74,7 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
       class="mt-3 inline-flex items-center justify-center gap-1.5 rounded-none bg-wine-soft px-4 py-2.5 text-[12px] font-semibold tracking-[0.08em] text-wine uppercase transition hover:bg-wine hover:text-white"
     >
       <svg class="h-4 w-4" aria-hidden="true"><use href="#i-bag"></use></svg>
-      Agregar
+      {cta}
     </button>
   </div>
 </article>
