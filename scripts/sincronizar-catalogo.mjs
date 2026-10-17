@@ -35,7 +35,8 @@ for (const [nombre, config] of Object.entries(CATALOGOS)) {
     writeFileSync(join(raiz, 'src/data', config.archivo), JSON.stringify(data));
     console.log(`✔ ${nombre}: ${categorias} categorías, ${productos} productos → ${config.archivo}`);
   } catch (err) {
-    console.error(`✖ ${nombre}: ${err.message} (se conserva el respaldo actual)`);
-    process.exitCode = 1;
+    // No cortamos el proceso: asi se puede encadenar antes del build sin
+    // romperlo cuando la API no responde (se conserva el respaldo anterior).
+    console.warn(`! ${nombre}: ${err.message} (se conserva el respaldo actual)`);
   }
 }
