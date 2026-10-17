@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "sync": "node scripts/sincronizar-catalogo.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "vista-previa": "tailwindcss -i src/styles/global.css -o .preview-tailwind.css --minify && node scripts/crear-vista-previa.mjs",

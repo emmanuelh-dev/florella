@@ -96,6 +96,11 @@ function normalizar(data, config) {
 
 const cache = new Map();
 
+// En desarrollo NO cacheamos: asi ves al instante lo que cambies en Mimir
+// (precios, fotos) sin reiniciar el servidor. En el build si se cachea para
+// pedir cada catalogo una sola vez.
+const CACHEAR = !import.meta.env?.DEV;
+
 /**
  * Devuelve las categorias normalizadas de un catalogo.
  * @param {'florella'|'soloOfrendas'} nombre
@@ -104,28 +109,26 @@ const cache = new Map();
 export async function getCatalogo(nombre) {
   const config = CATALOGOS[nombre];
   if (!config) throw new Error(`Catalogo desconocido: ${nombre}`);
+  if (CACHEAR && cache.has(nombre)) return cache.get(nombre);
 
-  if (!cache.has(nombre)) {
-    cache.set(
-      nombre,
-      (async () => {
-        try {
-          const res = await fetch(`${BASE_URL}/${config.id}`, {
-            headers: { accept: 'application/json' },
-            signal: AbortSignal.timeout(15000),
-          });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return normalizar(await res.json(), config);
-        } catch (err) {
-          console.warn(
-            `[catalogo:${nombre}] API no disponible (${err.message}); usando snapshot local.`,
-          );
-          return normalizar(config.snapshot, config);
-        }
-      })(),
-    );
-  }
-  return cache.get(nombre);
+  const promesa = (async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/${config.id}`, {
+        headers: { accept: 'application/json' },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return normalizar(await res.json(), config);
+    } catch (err) {
+      console.warn(
+        `[catalogo:${nombre}] API no disponible (${err.message}); usando snapshot local.`,
+      );
+      return normalizar(config.snapshot, config);
+    }
+  })();
+
+  if (CACHEAR) cache.set(nombre, promesa);
+  return promesa;
 }
 
 /** Catalogo general de Florella (raiz). */
