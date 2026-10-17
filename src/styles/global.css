@@ -22,4 +22,13 @@
   body {
     @apply bg-page text-ink font-sans antialiased;
   }
+
+  /* Los <use> heredan el trazo hacia el símbolo referenciado (iconos Lucide).
+     Sin esto, los iconos de líneas (menú, flechas, ✕, +, −) salen invisibles. */
+  svg[aria-hidden="true"] use {
+    @apply fill-none stroke-current;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 }

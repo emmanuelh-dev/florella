@@ -3,6 +3,7 @@
 Rastro corto de cambios. Lo más reciente arriba.
 
 ## 2026-10
+- **Iconos**: arreglado el trazo de los `<use>` (el menú ☰, las flechas, ✕, + y − salían invisibles); ahora todos los iconos de Lucide se ven.
 - **SEO**: canonical, Open Graph, Twitter, JSON-LD (Florist), `sitemap.xml` y `robots.txt`; títulos con Monterrey.
 - **Catálogo**: en dev sin caché (ves los cambios de Mimir al refrescar); `bun run sync` refresca respaldos; el build sincroniza antes de compilar.
 - **Iconos** migrados a Lucide (lucide.dev).
