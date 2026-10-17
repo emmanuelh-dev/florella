@@ -173,28 +173,6 @@ const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
         <div class="flex items-center gap-1 sm:gap-2">
           <button
             type="button"
-            data-open-dialog="menu-dialog"
-            aria-label="Abrir menú"
-            class="relative inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine md:hidden"
-          >
-            <svg class="h-5 w-5" aria-hidden="true"
-              ><use href="#i-menu"></use></svg
-            >
-          </button>
-          <button
-            type="button"
-            id="open-search"
-            aria-label="Buscar flores"
-            aria-expanded="false"
-            aria-controls="search-panel"
-            class="relative inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-          >
-            <svg class="h-5 w-5" aria-hidden="true"
-              ><use href="#i-search"></use></svg
-            >
-          </button>
-          <button
-            type="button"
             id="favorites-toggle"
             aria-label="Ver mis favoritos"
             aria-pressed="false"
@@ -220,41 +198,21 @@ const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
               >0</span
             >
           </button>
+          <button
+            type="button"
+            data-open-dialog="menu-dialog"
+            aria-label="Abrir menú"
+            class="relative inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine md:hidden"
+          >
+            <svg class="h-5 w-5" aria-hidden="true"
+              ><use href="#i-menu"></use></svg
+            >
+          </button>
         </div>
       </div>
     </header>
 
     <main id="contenido">
-      <!-- Search Panel -->
-      <div id="search-panel" hidden class="border-b border-line bg-white">
-        <div class="mx-auto max-w-6xl px-4 py-3 sm:px-6">
-          <div
-            class="flex items-center gap-2 rounded-none border border-line bg-page px-4 py-2.5"
-          >
-            <svg class="h-5 w-5 shrink-0 text-muted" aria-hidden="true"
-              ><use href="#i-search"></use></svg
-            >
-            <input
-              id="search-input"
-              type="search"
-              placeholder="Rosas, girasoles, cumpleaños, condolencias…"
-              autocomplete="off"
-              class="w-full bg-transparent text-sm text-ink outline-none placeholder:text-muted-light"
-            />
-            <button
-              type="button"
-              id="close-search"
-              aria-label="Cerrar búsqueda"
-              class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-            >
-              <svg class="h-5 w-5" aria-hidden="true"
-                ><use href="#i-close"></use></svg
-              >
-            </button>
-          </div>
-        </div>
-      </div>
-
       <slot />
     </main>
 
@@ -512,6 +470,16 @@ const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
             Se abrirá WhatsApp con los datos. Adjunta ahí la foto de referencia.
           </p>
         </form>
+
+        <!-- Cerrar el carrito (siempre visible, sin tener que subir) -->
+        <button
+          type="button"
+          data-close-dialog
+          class="mt-3 flex w-full items-center justify-center gap-2 rounded-none border border-line bg-white px-5 py-3 text-[12px] font-semibold tracking-[0.08em] text-ink uppercase transition hover:border-wine hover:text-wine"
+        >
+          <svg class="h-4 w-4" aria-hidden="true"><use href="#i-close"></use></svg>
+          Cerrar carrito
+        </button>
       </div>
     </dialog>
 

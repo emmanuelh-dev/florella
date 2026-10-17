@@ -11,7 +11,6 @@
   const money = (value) => new Intl.NumberFormat('es-MX', {
     style: 'currency', currency: 'MXN', maximumFractionDigits: 0,
   }).format(value);
-  const normalize = (value) => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 
   const cards = $$('[data-product]');
   const products = cards.map((card, index) => {
@@ -27,7 +26,7 @@
     };
   });
   const productById = new Map(products.map((product) => [product.id, product]));
-  const state = { occasion: 'Todas', maxPrice: 2500, query: '', order: 'featured', favoritesOnly: false };
+  const state = { occasion: 'Todas', maxPrice: 2500, order: 'featured', favoritesOnly: false };
   const hasPriceFilter = !!$('#max-price');
   const CART_KEY = 'florella-cart-v1';
   const FAVORITES_KEY = 'florella-favorites-v1';
@@ -80,12 +79,10 @@
       if (state.order === 'name') return a.name.localeCompare(b.name, 'es');
       return a.index - b.index;
     });
-    const query = normalize(state.query);
     let shown = 0;
     ordered.forEach((product) => {
       const matches = (state.occasion === 'Todas' || product.occasions.includes(state.occasion))
         && (!hasPriceFilter || product.price <= state.maxPrice)
-        && (!query || normalize(product.name + ' ' + product.occasions.join(' ')).includes(query))
         && (!state.favoritesOnly || favorites.has(product.id));
       product.card.hidden = !matches;
       const grid = $('#product-grid');
@@ -104,7 +101,7 @@
     const resultsCount = $('#results-count');
     if (resultsCount) resultsCount.textContent = shown + (shown === 1 ? ' arreglo' : ' arreglos') + (state.favoritesOnly ? ' en favoritos' : '');
     const resultsBar = $('#results-bar');
-    if (resultsBar) resultsBar.hidden = state.occasion === 'Todas' && state.maxPrice === 2500 && !query && !state.favoritesOnly && state.order === 'featured';
+    if (resultsBar) resultsBar.hidden = state.occasion === 'Todas' && state.maxPrice === 2500 && !state.favoritesOnly && state.order === 'featured';
     const emptyProducts = $('#empty-products');
     if (emptyProducts) emptyProducts.hidden = shown > 0;
     const favToggleState = $('#favorites-toggle');
@@ -113,9 +110,7 @@
   }
 
   function resetFilters() {
-    Object.assign(state, { occasion: 'Todas', maxPrice: 2500, query: '', order: 'featured', favoritesOnly: false });
-    const searchInputEl = $('#search-input');
-    if (searchInputEl) searchInputEl.value = '';
+    Object.assign(state, { occasion: 'Todas', maxPrice: 2500, order: 'featured', favoritesOnly: false });
     const maxPriceInput = $('#max-price');
     if (maxPriceInput) maxPriceInput.value = '2500';
     const sortReset = $('#sort');
@@ -136,36 +131,10 @@
     state.order = event.target.value;
     applyFilters();
   });
-  const searchInput = $('#search-input');
-  if (searchInput) searchInput.addEventListener('input', (event) => {
-    state.query = event.target.value;
-    applyFilters();
-  });
   const clearFilters = $('#clear-filters');
   if (clearFilters) clearFilters.addEventListener('click', resetFilters);
   const resetEmpty = $('#reset-empty');
   if (resetEmpty) resetEmpty.addEventListener('click', resetFilters);
-  const openSearch = $('#open-search');
-  if (openSearch) openSearch.addEventListener('click', () => {
-    const panel = $('#search-panel');
-    if (!panel) return;
-    panel.hidden = !panel.hidden;
-    openSearch.setAttribute('aria-expanded', String(!panel.hidden));
-    if (!panel.hidden && searchInput) searchInput.focus();
-  });
-  function closeSearch() {
-    const panel = $('#search-panel');
-    if (!panel) return;
-    panel.hidden = true;
-    if (openSearch) openSearch.setAttribute('aria-expanded', 'false');
-    if (searchInput) searchInput.value = '';
-    state.query = '';
-    applyFilters();
-    if (openSearch) openSearch.focus();
-  }
-  const closeSearchBtn = $('#close-search');
-  if (closeSearchBtn) closeSearchBtn.addEventListener('click', closeSearch);
-  if (searchInput) searchInput.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeSearch(); });
 
   function renderFavorites() {
     $$('[data-favorite]').forEach((button) => {
