@@ -1,0 +1,87 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { getCategorias } from '../../data/solo-ofrendas.js';
+
+export async function getStaticPaths() {
+  const categorias = await getCategorias();
+  return categorias.map((categoria) => ({
+    params: { categoria: categoria.slug },
+    props: { categoria },
+  }));
+}
+
+const { categoria } = Astro.props;
+const categorias = await getCategorias();
+---
+
+<Layout
+  title={`${categoria.nombre} · Solo Ofrendas · Florella`}
+  description={`${categoria.nombre} — ${categoria.productos.length} arreglos del catálogo Solo Ofrendas de Florella. Entrega en Monterrey.`}
+>
+  <section class="bg-page py-10 sm:py-14">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <nav aria-label="Ruta" class="text-xs text-muted">
+        <a href="/solo-ofrendas" class="transition hover:text-wine">Solo Ofrendas</a>
+        <span class="mx-1.5">/</span>
+        <span class="text-ink-secondary">{categoria.nombre}</span>
+      </nav>
+
+      <div class="mt-2 flex flex-wrap items-end justify-between gap-4">
+        <h1
+          class="font-serif text-2xl font-semibold text-ink sm:text-3xl lg:text-4xl"
+        >
+          {categoria.nombre}
+        </h1>
+        <p class="text-sm text-muted">
+          {categoria.productos.length}
+          {categoria.productos.length === 1 ? 'artículo' : 'artículos'}
+        </p>
+      </div>
+
+      <!-- Categorías -->
+      <nav
+        aria-label="Categorías de Solo Ofrendas"
+        class="mt-5 flex flex-wrap gap-1.5"
+      >
+        {
+          categorias.map((cat) => (
+            <a
+              href={`/solo-ofrendas/${cat.slug}`}
+              aria-current={cat.slug === categoria.slug ? 'page' : undefined}
+              class:list={[
+                'rounded-none px-3 py-1.5 text-[13px] font-medium transition',
+                cat.slug === categoria.slug
+                  ? 'bg-wine text-white'
+                  : 'bg-white text-ink-secondary ring-1 ring-line hover:bg-wine-soft hover:text-wine',
+              ]}
+            >
+              {cat.nombre}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div
+        id="product-grid"
+        class="mt-8 grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4"
+      >
+        {
+          categoria.productos.map((prod) => (
+            <ProductCard
+              producto={{
+                id: prod.id,
+                nombre: prod.nombre,
+                precio: prod.precio,
+                imagen: prod.imagen,
+                alt: `${prod.nombre} — Florella`,
+                occasions: [categoria.nombre],
+                disponible: prod.disponible,
+              }}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

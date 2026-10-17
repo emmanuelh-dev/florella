@@ -1,0 +1,635 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "Florella · Flores que honran su memoria",
+  description = "Flores que honran su memoria. Arreglos funerarios con entrega en Monterrey y zona conurbada.",
+} = Astro.props;
+
+const ruta = Astro.url.pathname;
+const enInicio = ruta === "/";
+const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#8F4359" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:rounded-none focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-wine"
+      >Saltar al contenido</a
+    >
+
+    <!-- SVG Icon Library -->
+    <svg
+      class="hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m16 16 4.5 4.5"></path>
+      </symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24">
+        <path
+          d="M20.4 4.8a5.2 5.2 0 0 0-7.4 0L12 5.9l-1.1-1.1a5.2 5.2 0 0 0-7.4 7.4L12 21l8.4-8.8a5.2 5.2 0 0 0 0-7.4Z"
+        ></path>
+      </symbol>
+      <symbol id="i-cart" viewBox="0 0 24 24">
+        <path d="M3 4h2l2.2 11h10.9l2-8H6"></path>
+        <circle cx="9" cy="20" r="1"></circle>
+        <circle cx="18" cy="20" r="1"></circle>
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24">
+        <path d="M4 12h16m-6-6 6 6-6 6"></path>
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24">
+        <path d="m6 6 12 12M18 6 6 18"></path>
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14"></path>
+      </symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24">
+        <path d="M5 12h14"></path>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6"></path>
+      </symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24">
+        <path d="M5 7h14l1 14H4L5 7Z"></path>
+        <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+      </symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24">
+        <rect x="1" y="4" width="14" height="12" rx="2"></rect>
+        <path d="M15 8h4.5l3.5 4v4h-8V8z"></path>
+        <circle cx="6" cy="18" r="2.5"></circle>
+        <circle cx="18" cy="18" r="2.5"></circle>
+      </symbol>
+      <symbol id="i-orchid" viewBox="0 0 24 24">
+        <path
+          d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V12m0 4.5a4.5 4.5 0 1 1-4.5-4.5M12 16.5A4.5 4.5 0 1 0 16.5 12M12 16.5V12m4.5 0A4.5 4.5 0 0 1 12 12m-4.5 0A4.5 4.5 0 0 1 12 12"
+        ></path>
+        <circle cx="12" cy="12" r="1.5"></circle>
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        <path d="m9 12 2 2 4-4"></path>
+      </symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24">
+        <path d="M5 19C5 9 13 5 20 4c-1 7-5 15-15 15Z"></path>
+        <path d="M5 19c3-5 7-9 11-11"></path>
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+      </symbol>
+      <symbol id="i-whatsapp" viewBox="0 0 24 24">
+        <path
+          d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"
+        ></path>
+        <path
+          d="M8.8 7.9c.2-.4.4-.4.6-.4h.4c.2 0 .4 0 .5.4l.7 1.6c.1.2 0 .4-.1.6l-.5.6c-.1.1-.2.3 0 .5a6 6 0 0 0 2.8 2.4c.3.1.4.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.5.8c.2.1.3.2.3.4 0 .8-.6 1.5-1.2 1.6-.6.1-1.2.1-3.2-.9a10 10 0 0 1-3.5-3.2c-.4-.8-.5-1.4-.4-1.9 0-.3.2-.7.5-1Z"
+        ></path>
+      </symbol>
+    </svg>
+
+    <!-- Header Navbar -->
+    <header
+      class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur"
+    >
+      <div
+        class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
+      >
+        <a
+          href="/"
+          aria-label="Florella, inicio"
+          class="flex shrink-0 items-center"
+        >
+          <img
+            src="/imagenes/logo.png"
+            alt="Florella Eventos y detalles"
+            class="h-10 w-auto object-contain sm:h-11"
+          />
+        </a>
+
+        <nav
+          aria-label="Navegación principal"
+          class="hidden items-center gap-1 md:flex"
+        >
+          <a
+            href="/"
+            aria-current={enInicio ? "page" : undefined}
+            class:list={[
+              "rounded-none px-3 py-2 text-[12px] font-semibold tracking-[0.1em] uppercase transition",
+              enInicio
+                ? "bg-wine-soft text-wine"
+                : "text-ink-secondary hover:bg-wine-soft/60 hover:text-wine",
+            ]}
+            >Inicio</a
+          >
+
+          <a
+            href="/solo-ofrendas"
+            aria-current={enSoloOfrendas ? "page" : undefined}
+            class:list={[
+              "rounded-none px-3 py-2 text-[12px] font-semibold tracking-[0.1em] uppercase transition",
+              enSoloOfrendas
+                ? "bg-wine-soft text-wine"
+                : "text-ink-secondary hover:bg-wine-soft/60 hover:text-wine",
+            ]}
+            >Solo Ofrendas</a
+          >
+
+          <button
+            type="button"
+            data-open-dialog="contact-dialog"
+            class="cursor-pointer rounded-none bg-transparent px-3 py-2 text-[12px] font-semibold tracking-[0.1em] text-ink-secondary uppercase transition hover:bg-wine-soft/60 hover:text-wine"
+            >Contacto</button
+          >
+        </nav>
+
+        <div class="flex items-center gap-1 sm:gap-2">
+          <button
+            type="button"
+            id="open-search"
+            aria-label="Buscar flores"
+            aria-expanded="false"
+            aria-controls="search-panel"
+            class="relative inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
+          >
+            <svg class="h-5 w-5" aria-hidden="true"
+              ><use href="#i-search"></use></svg
+            >
+          </button>
+          <button
+            type="button"
+            id="favorites-toggle"
+            aria-label="Ver mis favoritos"
+            aria-pressed="false"
+            class="relative inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
+          >
+            <svg class="h-5 w-5" aria-hidden="true"
+              ><use href="#i-heart"></use></svg
+            >
+          </button>
+          <button
+            type="button"
+            data-open-dialog="cart-dialog"
+            aria-label="Abrir carrito"
+            class="relative inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
+          >
+            <svg class="h-5 w-5" aria-hidden="true"
+              ><use href="#i-cart"></use></svg
+            >
+            <span
+              data-cart-count
+              aria-hidden="true"
+              class="absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-none bg-wine-badge px-1 text-[11px] font-semibold text-white"
+              >0</span
+            >
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <!-- Search Panel -->
+      <div id="search-panel" hidden class="border-b border-line bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+          <div
+            class="flex items-center gap-2 rounded-none border border-line bg-page px-4 py-2.5"
+          >
+            <svg class="h-5 w-5 shrink-0 text-muted" aria-hidden="true"
+              ><use href="#i-search"></use></svg
+            >
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Corona, condolencias, cruz, rosas…"
+              autocomplete="off"
+              class="w-full bg-transparent text-sm text-ink outline-none placeholder:text-muted-light"
+            />
+            <button
+              type="button"
+              id="close-search"
+              aria-label="Cerrar búsqueda"
+              class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
+            >
+              <svg class="h-5 w-5" aria-hidden="true"
+                ><use href="#i-close"></use></svg
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-line bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div
+          class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
+        >
+          <a
+            href="/"
+            aria-label="Florella, volver al inicio"
+            class="flex shrink-0 items-center"
+          >
+            <img
+              src="/imagenes/logo.png"
+              alt="Florella Eventos y detalles"
+              class="h-10 w-auto object-contain sm:h-11"
+            />
+          </a>
+          <nav
+            aria-label="Navegación pie de página"
+            class="flex flex-wrap items-center gap-4 text-sm text-muted"
+          >
+            <a href="/" class="transition hover:text-wine">Inicio</a>
+            <a href="/#arreglos-funerarios" class="transition hover:text-wine"
+              >Funerarios</a
+            >
+            <a href="/solo-ofrendas" class="transition hover:text-wine"
+              >Solo Ofrendas</a
+            >
+            <button
+              type="button"
+              data-open-dialog="contact-dialog"
+              class="cursor-pointer bg-transparent transition hover:text-wine"
+              >Contacto</button
+            >
+          </nav>
+        </div>
+        <div
+          class="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p>© 2026 Florella. Todos los derechos reservados.</p>
+          <span
+            >Entrega express en Monterrey y zona conurbada · WhatsApp 81 1617
+            6724.</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- WhatsApp flotante: abre la solicitud con el formulario -->
+    <button
+      type="button"
+      data-open-dialog="cart-dialog"
+      aria-label="Pedir por WhatsApp"
+      class="fixed right-4 bottom-4 z-[80] inline-flex items-center gap-2 rounded-none bg-wine px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-wine-hover"
+    >
+      <svg class="h-5 w-5" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+      <span class="hidden sm:inline">Pedir por WhatsApp</span>
+    </button>
+
+    <!-- Cart Drawer -->
+    <dialog
+      id="cart-dialog"
+      aria-labelledby="cart-title"
+      class="m-0 top-0 right-0 bottom-0 left-auto h-dvh max-h-none w-[min(92vw,430px)] max-w-none translate-x-full overflow-y-auto rounded-none border-l border-line bg-white p-0 text-ink shadow-[-24px_0_60px_-20px_rgba(0,0,0,0.45)] backdrop:bg-black/50 transition-transform duration-300 ease-out open:translate-x-0 starting:open:translate-x-full"
+    >
+      <div class="h-1 w-full bg-wine"></div>
+      <div
+        class="flex items-start justify-between gap-4 border-b border-line px-6 py-5"
+      >
+        <div>
+          <span
+            class="text-[10px] font-semibold tracking-[0.28em] text-wine uppercase"
+            >PEDIDO ESPECIAL</span
+          >
+          <h2
+            id="cart-title"
+            class="mt-1.5 font-serif text-[26px] leading-none font-semibold text-ink"
+          >
+            Tu carrito
+          </h2>
+        </div>
+        <button
+          type="button"
+          data-close-dialog
+          aria-label="Cerrar carrito"
+          class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-none border border-line text-ink-secondary transition hover:border-wine hover:text-wine"
+        >
+          <svg class="h-4 w-4" aria-hidden="true"
+            ><use href="#i-close"></use></svg
+          >
+        </button>
+      </div>
+
+      <div id="empty-cart" class="px-6 py-12 text-center">
+        <svg class="mx-auto block h-9 w-9 text-muted-light" aria-hidden="true"
+          ><use href="#i-bag"></use></svg
+        >
+        <h3 class="mt-4 mb-2 font-serif text-xl text-ink">
+          Tu carrito está vacío.
+        </h3>
+        <p class="mb-6 text-[13px] leading-relaxed text-muted">
+          Agrega una ofrenda para preparar tu solicitud.
+        </p>
+        <button
+          type="button"
+          data-close-dialog
+          class="inline-flex items-center gap-2 rounded-none bg-wine px-6 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
+        >
+          Explorar arreglos
+        </button>
+      </div>
+
+      <div
+        id="cart-items"
+        class="flex flex-col gap-3 p-6"
+      >
+      </div>
+
+      <div id="cart-summary" class="border-t border-line p-6">
+        <div id="cart-subtotal" class="mb-5">
+          <div
+            class="flex items-center justify-between border-b border-line pb-3"
+          >
+            <span
+              class="text-[11px] font-semibold tracking-[0.18em] text-ink-secondary uppercase"
+              >Subtotal</span
+            >
+            <strong
+              id="cart-total"
+              class="font-serif text-xl font-semibold text-ink"
+              >$0 MXN</strong
+            >
+          </div>
+          <p class="mt-3 text-[11.5px] text-muted">
+            Entrega en Monterrey y zona conurbada incluida según zona.
+          </p>
+        </div>
+
+        <form id="order-form" class="space-y-4">
+          <p class="text-[11px] font-semibold tracking-[0.18em] text-wine">
+            DATOS DE LA OFRENDA
+          </p>
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <label
+              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            >
+              Fecha de entrega
+              <input
+                type="date"
+                name="fechaEntrega"
+                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              />
+            </label>
+            <label
+              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            >
+              Rango de horario
+              <input
+                type="text"
+                name="rangoHorario"
+                placeholder="Ej. 10:00 – 13:00"
+                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              />
+            </label>
+          </div>
+
+          <label
+            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+          >
+            Nombre de la persona fallecida (+)
+            <input
+              type="text"
+              name="fallecido"
+              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+            />
+          </label>
+
+          <label
+            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+          >
+            Dirección de envío o Capillas
+            <input
+              type="text"
+              name="direccion"
+              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+            />
+          </label>
+
+          <label
+            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+          >
+            *Texto en listón
+            <input
+              type="text"
+              name="liston"
+              required
+              placeholder="Ej. Siempre en nuestros corazones"
+              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+            />
+          </label>
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <label
+              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            >
+              *Teléfono de contacto
+              <input
+                type="tel"
+                name="telefono"
+                required
+                inputmode="tel"
+                placeholder="10 dígitos"
+                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              />
+            </label>
+            <label
+              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            >
+              *Rango de horario de servicio/entrega
+              <input
+                type="text"
+                name="horarioServicio"
+                required
+                placeholder="Ej. 09:00 – 18:00"
+                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              />
+            </label>
+          </div>
+
+          <label
+            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+          >
+            *Foto de la ofrenda y combinación de colores
+            <textarea
+              name="fotoColores"
+              rows="2"
+              required
+              placeholder="Describe la ofrenda y los colores. Adjunta la foto en el chat de WhatsApp."
+              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+            ></textarea>
+          </label>
+
+          <button
+            id="checkout"
+            type="submit"
+            class="flex w-full items-center justify-center gap-2 rounded-none bg-wine px-5 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-white uppercase transition hover:bg-wine-hover disabled:opacity-50"
+          >
+            Enviar solicitud por WhatsApp <svg
+              class="h-4 w-4"
+              aria-hidden="true"><use href="#i-arrow"></use></svg
+            >
+          </button>
+          <p class="text-[11px] text-muted">
+            Se abrirá WhatsApp con los datos. Adjunta ahí la foto de referencia.
+          </p>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- Cart Item Template -->
+    <template id="cart-item-template">
+      <article
+        class="flex items-start gap-3 rounded-none border border-line bg-white p-3"
+      >
+        <img
+          width="72"
+          height="72"
+          alt=""
+          class="h-[72px] w-[72px] shrink-0 rounded-none object-cover"
+        />
+        <div class="flex min-w-0 flex-1 flex-col gap-1">
+          <h3 class="truncate text-sm font-semibold text-ink"></h3>
+          <p data-cart-price class="text-[13px] font-bold text-wine"></p>
+          <div
+            class="inline-flex w-fit items-center gap-1.5 rounded-none border border-line px-1.5 py-1"
+          >
+            <button
+              type="button"
+              data-cart-action="decrease"
+              aria-label="Disminuir cantidad"
+              class="inline-flex h-6 w-6 items-center justify-center rounded-none text-ink transition hover:bg-wine-soft hover:text-wine"
+            >
+              <svg class="h-3.5 w-3.5" aria-hidden="true"
+                ><use href="#i-minus"></use></svg
+              >
+            </button>
+            <span data-quantity class="text-[13px] font-semibold text-ink"
+              >1</span
+            >
+            <button
+              type="button"
+              data-cart-action="increase"
+              aria-label="Aumentar cantidad"
+              class="inline-flex h-6 w-6 items-center justify-center rounded-none text-ink transition hover:bg-wine-soft hover:text-wine"
+            >
+              <svg class="h-3.5 w-3.5" aria-hidden="true"
+                ><use href="#i-plus"></use></svg
+              >
+            </button>
+          </div>
+        </div>
+        <button
+          type="button"
+          data-cart-action="remove"
+          aria-label="Eliminar producto"
+          class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-none border border-line text-muted transition hover:border-wine hover:text-wine"
+        >
+          <svg class="h-4 w-4" aria-hidden="true"
+            ><use href="#i-close"></use></svg
+          >
+        </button>
+      </article>
+    </template>
+
+    <!-- Contact Dialog -->
+    <dialog
+      id="contact-dialog"
+      aria-labelledby="contact-title"
+      class="relative m-auto w-[min(94vw,520px)] rounded-none border border-line bg-white p-6 text-left text-ink shadow-2xl backdrop:bg-black/50 sm:p-8"
+    >
+      <button
+        type="button"
+        data-close-dialog
+        aria-label="Cerrar contacto"
+        class="absolute top-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-none text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
+      >
+        <svg class="h-5 w-5" aria-hidden="true"><use href="#i-close"></use></svg
+        >
+      </button>
+      <span class="text-[11px] font-semibold tracking-[0.22em] text-wine"
+        >ATENCIÓN INMEDIATA 24/7</span
+      >
+      <h2
+        id="contact-title"
+        class="mt-2 font-serif text-3xl font-semibold text-ink"
+      >
+        Estamos para apoyarte
+      </h2>
+      <p id="contact-copy" class="mt-3 text-sm leading-relaxed text-muted">
+        Comunícate directamente con nosotros para coordinar la entrega o
+        personalizar la cinta con el mensaje de condolencias.
+      </p>
+      <a
+        href="https://api.whatsapp.com/send?phone=528116176724&text=Hola,%20necesito%20informaci%C3%B3n%20sobre%20un%20arreglo%20funerario"
+        target="_blank"
+        rel="noopener"
+        class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-none bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
+      >
+        Escribir por WhatsApp <svg class="h-4 w-4" aria-hidden="true"
+          ><use href="#i-arrow"></use></svg
+        >
+      </a>
+    </dialog>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      role="status"
+      aria-live="polite"
+      hidden
+      class="fixed bottom-4 left-1/2 z-[90] w-max max-w-[92vw] -translate-x-1/2 overflow-hidden rounded-none bg-ink px-4 py-2.5 text-sm font-medium text-ellipsis whitespace-nowrap text-white shadow-lg"
+    >
+      <svg class="mr-1.5 inline h-4 w-4" aria-hidden="true"
+        ><use href="#i-check"></use></svg
+      >
+      <span></span>
+    </div>
+
+    <!-- Scripts -->
+    <script is:inline defer src="/scripts/config.js"></script>
+    <script is:inline defer src="/scripts/tienda.js"></script>
+    <script is:inline>
+      // Marca visual de la categoría activa en los círculos de categorías.
+      document.addEventListener("DOMContentLoaded", () => {
+        const catButtons = document.querySelectorAll("[data-occasion]");
+        catButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            catButtons.forEach((b) => {
+              b.dataset.active = "false";
+            });
+            btn.dataset.active = "true";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

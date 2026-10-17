@@ -10,6 +10,7 @@ import { SECCIONES } from '../src/data/articulos.js';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const load = (name) => readFileSync(join(root, name), 'utf8');
 const source = load('src/pages/index.astro');
+const layout = load('src/layouts/Layout.astro');
 const css = load('src/styles/global.css');
 const preview = load('ABRIR-DISENO.html');
 
@@ -49,14 +50,15 @@ test('La vista previa trae Tailwind compilado y las imagenes locales', () => {
 });
 
 test('No hay identificadores HTML duplicados en el inicio', () => {
-  const ids = Array.from(source.matchAll(/\sid="([^"]+)"/g), (m) => m[1]);
+  const ids = Array.from((source + '\n' + layout).matchAll(/\sid="([^"]+)"/g), (m) => m[1]);
   assert.equal(ids.length, new Set(ids).size);
 });
 
 test('Los dialogos que se abren existen', () => {
-  const dialogs = new Set(Array.from(source.matchAll(/<dialog\s+id="([^"]+)"/g), (m) => m[1]));
+  const page = source + '\n' + layout;
+  const dialogs = new Set(Array.from(page.matchAll(/<dialog\s+id="([^"]+)"/g), (m) => m[1]));
   assert.ok(dialogs.size > 0);
-  for (const m of source.matchAll(/data-open-dialog="([^"]+)"/g)) {
+  for (const m of page.matchAll(/data-open-dialog="([^"]+)"/g)) {
     assert.ok(dialogs.has(m[1]), m[1]);
   }
 });

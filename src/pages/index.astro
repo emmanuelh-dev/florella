@@ -1,807 +1,307 @@
 ---
-import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import ProductCard from "../components/ProductCard.astro";
 import { SECCIONES } from "../data/articulos.js";
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Flores que honran su memoria. Arreglos funerarios con entrega en Monterrey y zona conurbada."
-    />
-    <meta name="theme-color" content="#8F4359" />
-    <title>Florella · Flores que honran su memoria</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <a
-      href="#arreglos-funerarios"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-wine"
-      >Saltar al catálogo</a
-    >
-
-    <!-- SVG Icon Library -->
-    <svg
-      class="hidden"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.6"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <symbol id="i-search" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="7"></circle>
-        <path d="m16 16 4.5 4.5"></path>
-      </symbol>
-      <symbol id="i-heart" viewBox="0 0 24 24">
-        <path
-          d="M20.4 4.8a5.2 5.2 0 0 0-7.4 0L12 5.9l-1.1-1.1a5.2 5.2 0 0 0-7.4 7.4L12 21l8.4-8.8a5.2 5.2 0 0 0 0-7.4Z"
-        ></path>
-      </symbol>
-      <symbol id="i-cart" viewBox="0 0 24 24">
-        <path d="M3 4h2l2.2 11h10.9l2-8H6"></path>
-        <circle cx="9" cy="20" r="1"></circle>
-        <circle cx="18" cy="20" r="1"></circle>
-      </symbol>
-      <symbol id="i-arrow" viewBox="0 0 24 24">
-        <path d="M4 12h16m-6-6 6 6-6 6"></path>
-      </symbol>
-      <symbol id="i-close" viewBox="0 0 24 24">
-        <path d="m6 6 12 12M18 6 6 18"></path>
-      </symbol>
-      <symbol id="i-plus" viewBox="0 0 24 24">
-        <path d="M12 5v14M5 12h14"></path>
-      </symbol>
-      <symbol id="i-minus" viewBox="0 0 24 24">
-        <path d="M5 12h14"></path>
-      </symbol>
-      <symbol id="i-check" viewBox="0 0 24 24">
-        <path d="m5 12 4 4L19 6"></path>
-      </symbol>
-      <symbol id="i-bag" viewBox="0 0 24 24">
-        <path d="M5 7h14l1 14H4L5 7Z"></path>
-        <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
-      </symbol>
-      <symbol id="i-truck" viewBox="0 0 24 24">
-        <rect x="1" y="4" width="14" height="12" rx="2"></rect>
-        <path d="M15 8h4.5l3.5 4v4h-8V8z"></path>
-        <circle cx="6" cy="18" r="2.5"></circle>
-        <circle cx="18" cy="18" r="2.5"></circle>
-      </symbol>
-      <symbol id="i-orchid" viewBox="0 0 24 24">
-        <path
-          d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V12m0 4.5a4.5 4.5 0 1 1-4.5-4.5M12 16.5A4.5 4.5 0 1 0 16.5 12M12 16.5V12m4.5 0A4.5 4.5 0 0 1 12 12m-4.5 0A4.5 4.5 0 0 1 12 12"
-        ></path>
-        <circle cx="12" cy="12" r="1.5"></circle>
-      </symbol>
-      <symbol id="i-shield" viewBox="0 0 24 24">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-        <path d="m9 12 2 2 4-4"></path>
-      </symbol>
-      <symbol id="i-leaf" viewBox="0 0 24 24">
-        <path d="M5 19C5 9 13 5 20 4c-1 7-5 15-15 15Z"></path>
-        <path d="M5 19c3-5 7-9 11-11"></path>
-      </symbol>
-      <symbol id="i-lock" viewBox="0 0 24 24">
-        <rect x="5" y="10" width="14" height="10" rx="2"></rect>
-        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-      </symbol>
-    </svg>
-
-    <!-- Header Navbar -->
-    <header
-      id="inicio"
-      class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur"
-    >
+<Layout
+  title="Florella · Flores que honran su memoria"
+  description="Flores que honran su memoria. Arreglos funerarios con entrega en Monterrey y zona conurbada."
+>
+  <!-- Hero Section -->
+  <section
+    aria-labelledby="hero-title"
+    class="relative overflow-hidden border-b border-line bg-white"
+  >
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <img
+        src="/imagenes/hero.jpg"
+        alt=""
+        fetchpriority="high"
+        class="h-full w-full object-cover"
+      />
       <div
-        class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
+        class="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-white/5"
       >
-        <a
-          href="#inicio"
-          aria-label="Florella, inicio"
-          class="flex shrink-0 items-center"
+      </div>
+    </div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+      <!-- Hero Left Content Column -->
+      <div class="flex max-w-xl flex-col items-start gap-5">
+        <h1
+          id="hero-title"
+          class="font-serif text-4xl leading-[1.1] font-semibold tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]"
         >
-          <img
-            src="/imagenes/logo.png"
-            alt="Florella Eventos y detalles"
-            class="h-10 w-auto object-contain sm:h-11"
-          />
-        </a>
+          Flores que<br />honran su memoria
+        </h1>
+        <p class="text-sm leading-relaxed text-muted sm:text-base">
+          Arreglos funerarios con entrega en Monterrey y zona conurbada.<br />
+          Expresa tus condolencias con flores que transmiten respeto, paz y cariño.
+        </p>
 
-        <nav
-          aria-label="Navegación principal"
-          class="hidden items-center gap-1 md:flex"
-        >
-          <a
-            href="#inicio"
-            aria-current="page"
-            class="rounded-full bg-wine-soft px-3 py-2 text-sm font-medium text-wine transition hover:bg-wine-soft hover:text-wine"
-            >Inicio</a
-          >
-
+        <div class="flex flex-wrap items-center gap-3">
           <a
             href="#arreglos-funerarios"
-            class="rounded-full px-3 py-2 text-sm font-medium text-ink-secondary transition hover:bg-wine-soft/60 hover:text-wine"
-            >Funerarios</a
+            class="inline-flex items-center gap-2 rounded-none bg-wine px-6 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
           >
-
-          <button
-            type="button"
-            data-open-dialog="contact-dialog"
-            class="cursor-pointer rounded-full bg-transparent px-3 py-2 text-sm font-medium text-ink-secondary transition hover:bg-wine-soft/60 hover:text-wine"
-            >Contacto</button
-          >
-        </nav>
-
-        <div class="flex items-center gap-1 sm:gap-2">
-          <button
-            type="button"
-            id="open-search"
-            aria-label="Buscar flores"
-            aria-expanded="false"
-            aria-controls="search-panel"
-            class="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-          >
-            <svg class="h-5 w-5" aria-hidden="true"
-              ><use href="#i-search"></use></svg
+            Ver arreglos funerarios <svg
+              class="h-[15px] w-[15px]"
+              aria-hidden="true"><use href="#i-arrow"></use></svg
             >
-          </button>
-          <button
-            type="button"
-            id="favorites-toggle"
-            aria-label="Ver mis favoritos"
-            aria-pressed="false"
-            class="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-          >
-            <svg class="h-5 w-5" aria-hidden="true"
-              ><use href="#i-heart"></use></svg
-            >
-          </button>
-          <button
-            type="button"
-            data-open-dialog="cart-dialog"
-            aria-label="Abrir carrito"
-            class="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-          >
-            <svg class="h-5 w-5" aria-hidden="true"
-              ><use href="#i-cart"></use></svg
-            >
-            <span
-              data-cart-count
-              aria-hidden="true"
-              class="absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wine-badge px-1 text-[11px] font-semibold text-white"
-              >0</span
-            >
-          </button>
+          </a>
         </div>
-      </div>
-    </header>
 
-    <main>
-      <!-- Search Panel -->
-      <div id="search-panel" hidden class="border-b border-line bg-white">
-        <div class="mx-auto max-w-6xl px-4 py-3 sm:px-6">
-          <div
-            class="flex items-center gap-2 rounded-full border border-line bg-page px-4 py-2.5"
-          >
-            <svg class="h-5 w-5 shrink-0 text-muted" aria-hidden="true"
-              ><use href="#i-search"></use></svg
+        <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="flex items-center gap-3">
+            <svg class="h-8 w-8 shrink-0 text-wine" aria-hidden="true"
+              ><use href="#i-truck"></use></svg
             >
-            <input
-              id="search-input"
-              type="search"
-              placeholder="Corona, condolencias, cruz, rosas…"
-              autocomplete="off"
-              class="w-full bg-transparent text-sm text-ink outline-none placeholder:text-muted-light"
-            />
-            <button
-              type="button"
-              id="close-search"
-              aria-label="Cerrar búsqueda"
-              class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-            >
-              <svg class="h-5 w-5" aria-hidden="true"
-                ><use href="#i-close"></use></svg
+            <div class="flex flex-col">
+              <strong class="text-[13px] font-semibold text-ink"
+                >Entrega el mismo día</strong
               >
-            </button>
+              <span class="text-xs text-muted">Monterrey y zona conurbada</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <svg class="h-8 w-8 shrink-0 text-wine" aria-hidden="true"
+              ><use href="#i-leaf"></use></svg
+            >
+            <div class="flex flex-col">
+              <strong class="text-[13px] font-semibold text-ink"
+                >Flores frescas</strong
+              >
+              <span class="text-xs text-muted">Calidad garantizada</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <svg class="h-8 w-8 shrink-0 text-wine" aria-hidden="true"
+              ><use href="#i-lock"></use></svg
+            >
+            <div class="flex flex-col">
+              <strong class="text-[13px] font-semibold text-ink"
+                >Compra segura</strong
+              >
+              <span class="text-xs text-muted">Atención personalizada</span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Hero Section -->
-      <section
-        aria-labelledby="hero-title"
-        class="relative overflow-hidden border-b border-line bg-white"
-      >
-        <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-          <img
-            src="/imagenes/hero.jpg"
-            alt=""
-            fetchpriority="high"
-            class="h-full w-full object-cover"
-          />
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-white/5"
-          >
-          </div>
-        </div>
-        <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-          <!-- Hero Left Content Column -->
-          <div class="flex max-w-xl flex-col items-start gap-5">
-            <h1
-              id="hero-title"
-              class="font-serif text-4xl leading-[1.1] font-semibold tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]"
-            >
-              Flores que<br />honran su memoria
-            </h1>
-            <p class="text-sm leading-relaxed text-muted sm:text-base">
-              Arreglos funerarios con entrega en Monterrey y zona conurbada.<br
-              />
-              Expresa tus condolencias con flores que transmiten respeto, paz y cariño.
-            </p>
-
-            <div class="flex flex-wrap items-center gap-3">
-              <a
-                href="#arreglos-funerarios"
-                class="inline-flex items-center gap-2 rounded-full bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
-              >
-                Ver arreglos funerarios <svg
-                  class="h-[15px] w-[15px]"
-                  aria-hidden="true"><use href="#i-arrow"></use></svg
-                >
-              </a>
-            </div>
-
-            <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
-              <div class="flex items-center gap-3">
-                <svg class="h-8 w-8 shrink-0 text-wine" aria-hidden="true"
-                  ><use href="#i-truck"></use></svg
-                >
-                <div class="flex flex-col">
-                  <strong class="text-[13px] font-semibold text-ink"
-                    >Entrega el mismo día</strong
-                  >
-                  <span class="text-xs text-muted"
-                    >Monterrey y zona conurbada</span
-                  >
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <svg class="h-8 w-8 shrink-0 text-wine" aria-hidden="true"
-                  ><use href="#i-leaf"></use></svg
-                >
-                <div class="flex flex-col">
-                  <strong class="text-[13px] font-semibold text-ink"
-                    >Flores frescas</strong
-                  >
-                  <span class="text-xs text-muted">Calidad garantizada</span>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <svg class="h-8 w-8 shrink-0 text-wine" aria-hidden="true"
-                  ><use href="#i-lock"></use></svg
-                >
-                <div class="flex flex-col">
-                  <strong class="text-[13px] font-semibold text-ink"
-                    >Compra segura</strong
-                  >
-                  <span class="text-xs text-muted">Atención personalizada</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Category Circles Section -->
-      <section
-        id="categorias"
-        aria-label="Categorías de arreglos funerarios"
-        class="border-b border-line bg-page py-8"
-      >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6">
-          <div class="grid grid-cols-3 gap-3 sm:grid-cols-6 sm:gap-4">
-            <button
-              type="button"
-              data-occasion="Todas"
-              data-active="true"
-              class="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-            >
-              <div
-                class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-line bg-circle sm:h-24 sm:w-24"
-              >
-                <img
-                  src="/imagenes/cat-coronas@2x.png"
-                  alt="Coronas funerarias"
-                  width="80"
-                  height="80"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-                >Coronas</span
-              >
-            </button>
-
-            <button
-              type="button"
-              data-occasion="Arreglos"
-              data-active="false"
-              class="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-            >
-              <div
-                class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-line bg-circle sm:h-24 sm:w-24"
-              >
-                <img
-                  src="/imagenes/cat-condolencias@2x.png"
-                  alt="Arreglos de condolencias"
-                  width="80"
-                  height="80"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-                >Arreglos de condolencias</span
-              >
-            </button>
-
-            <button
-              type="button"
-              data-occasion="Cruces"
-              data-active="false"
-              class="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-            >
-              <div
-                class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-line bg-circle sm:h-24 sm:w-24"
-              >
-                <img
-                  src="/imagenes/cat-cruces@2x.png"
-                  alt="Cruces de flores"
-                  width="80"
-                  height="80"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-                >Cruces</span
-              >
-            </button>
-
-            <button
-              type="button"
-              data-occasion="Centros"
-              data-active="false"
-              class="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-            >
-              <div
-                class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-line bg-circle sm:h-24 sm:w-24"
-              >
-                <img
-                  src="/imagenes/cat-centros@2x.png"
-                  alt="Centros funerarios"
-                  width="80"
-                  height="80"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-                >Centros funerarios</span
-              >
-            </button>
-
-            <button
-              type="button"
-              data-occasion="Ramos"
-              data-active="false"
-              class="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-            >
-              <div
-                class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-line bg-circle sm:h-24 sm:w-24"
-              >
-                <img
-                  src="/imagenes/cat-ramos@2x.png"
-                  alt="Ramos de condolencias"
-                  width="80"
-                  height="80"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-                >Ramos</span
-              >
-            </button>
-
-            <button
-              type="button"
-              data-occasion="Plantas"
-              data-active="false"
-              class="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
-            >
-              <div
-                class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-line bg-circle sm:h-24 sm:w-24"
-              >
-                <img
-                  src="/imagenes/cat-plantas@2x.png"
-                  alt="Plantas de paz"
-                  width="80"
-                  height="80"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
-                >Plantas</span
-              >
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Arreglos Funerarios Section -->
-      <section
-        id="arreglos-funerarios"
-        aria-labelledby="funerarios-heading"
-        class="bg-page py-10 sm:py-14"
-      >
-        <div class="mx-auto max-w-6xl px-4 sm:px-6">
-          <div class="mb-6 flex items-end justify-between gap-4">
-            <div>
-              <span
-                class="text-[11px] font-semibold tracking-[0.22em] text-wine sm:text-xs"
-                >A R R E G L O S &nbsp; F U N E R A R I O S</span
-              >
-              <h2
-                id="funerarios-heading"
-                class="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl lg:text-4xl"
-              >
-                Un adiós con flores
-              </h2>
-            </div>
-            <a
-              href="#arreglos-funerarios"
-              id="ver-todo-link"
-              class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-wine transition hover:text-wine-hover"
-            >
-              Ver todo <svg class="h-3.5 w-3.5" aria-hidden="true"
-                ><use href="#i-arrow"></use></svg
-              >
-            </a>
-          </div>
-
-          <!-- 5 Product Cards Grid (matches exact reference) -->
-          <div
-            id="product-grid"
-            class="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-5"
-          >
-                        {SECCIONES.flatMap((sec) =>
-              sec.articulos.map((a) => (
-                <article
-                  data-product
-                  data-id={a.id}
-                  data-name={a.nombre}
-                  data-price={a.precio}
-                  data-occasions={a.occasions.join('|')}
-                  class="group overflow-hidden rounded-xl border border-line bg-white transition hover:shadow-lg"
-                >
-                  <div class="relative aspect-[294/228] overflow-hidden bg-card">
-                    <img
-                      src={a.imagen}
-                      alt={a.alt}
-                      width="294"
-                      height="228"
-                      loading="eager"
-                      class="h-full w-full object-cover transition group-hover:scale-105"
-                    />
-                    <button
-                      type="button"
-                      data-favorite={a.id}
-                      aria-label={'Guardar ' + a.nombre + ' en favoritos'}
-                      aria-pressed="false"
-                      class="absolute top-2 right-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm transition hover:text-wine"
-                    >
-                      <svg class="h-[18px] w-[18px]" aria-hidden="true"
-                        ><use href="#i-heart"></use></svg
-                      >
-                    </button>
-                  </div>
-                  <div class="p-3 sm:p-4">
-                    <h3 class="text-[13px] font-semibold text-ink sm:text-sm">
-                      {a.nombre}
-                    </h3>
-                    <p class="mt-1 text-[13px] font-bold text-wine sm:text-sm">
-                      {'$' + a.precio.toLocaleString('es-MX') + ' MXN'}
-                    </p>
-                  </div>
-                </article>
-              ))
-            )}
-          </div>
-          <div id="empty-products" hidden class="px-4 py-12 text-center">
-            <p class="mb-4 text-base text-muted">
-              No se encontraron arreglos con esa selección.
-            </p>
-            <button
-              type="button"
-              id="reset-empty"
-              class="inline-flex items-center gap-2 rounded-full bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
-            >
-              Ver todos los arreglos
-            </button>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-line bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div
-          class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
+  <!-- Category Circles Section -->
+  <section
+    id="categorias"
+    aria-label="Categorías de arreglos funerarios"
+    class="border-b border-line bg-page py-8"
+  >
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="grid grid-cols-3 gap-3 sm:grid-cols-6 sm:gap-4">
+        <button
+          type="button"
+          data-occasion="Todas"
+          data-active="true"
+          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
         >
-          <a
-            href="#inicio"
-            aria-label="Florella, volver al inicio"
-            class="flex shrink-0 items-center"
+          <div
+            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
           >
             <img
-              src="/imagenes/logo.png"
-              alt="Florella Eventos y detalles"
-              class="h-10 w-auto object-contain sm:h-11"
+              src="/imagenes/cat-coronas@2x.png"
+              alt="Coronas funerarias"
+              width="80"
+              height="80"
+              class="h-full w-full object-cover"
             />
-          </a>
-          <nav
-            aria-label="Navegación pie de página"
-            class="flex flex-wrap items-center gap-4 text-sm text-muted"
-          >
-            <a href="#inicio" class="transition hover:text-wine">Inicio</a>
-
-            <a href="#arreglos-funerarios" class="transition hover:text-wine"
-              >Funerarios</a
-            >
-            <button
-              type="button"
-              data-open-dialog="contact-dialog"
-              class="cursor-pointer bg-transparent transition hover:text-wine"
-              >Contacto</button
-            >
-          </nav>
-        </div>
-        <div
-          class="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
-        >
-          <p>© 2026 Florella. Todos los derechos reservados.</p>
+          </div>
           <span
-            >Entrega express en Monterrey y zona conurbada · WhatsApp 81 1617
-            6724.</span
+            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
+            >Coronas</span
           >
-        </div>
-      </div>
-    </footer>
+        </button>
 
-    <!-- Cart Drawer -->
-    <dialog
-      id="cart-dialog"
-      aria-labelledby="cart-title"
-      class="m-auto w-[min(94vw,440px)] rounded-2xl border border-line bg-white p-0 text-ink shadow-2xl backdrop:bg-black/50"
-    >
-      <div
-        class="flex items-start justify-between gap-4 border-b border-line p-5"
-      >
+        <button
+          type="button"
+          data-occasion="Arreglos"
+          data-active="false"
+          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
+        >
+          <div
+            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
+          >
+            <img
+              src="/imagenes/cat-condolencias@2x.png"
+              alt="Arreglos de condolencias"
+              width="80"
+              height="80"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <span
+            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
+            >Arreglos de condolencias</span
+          >
+        </button>
+
+        <button
+          type="button"
+          data-occasion="Cruces"
+          data-active="false"
+          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
+        >
+          <div
+            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
+          >
+            <img
+              src="/imagenes/cat-cruces@2x.png"
+              alt="Cruces de flores"
+              width="80"
+              height="80"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <span
+            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
+            >Cruces</span
+          >
+        </button>
+
+        <button
+          type="button"
+          data-occasion="Centros"
+          data-active="false"
+          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
+        >
+          <div
+            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
+          >
+            <img
+              src="/imagenes/cat-centros@2x.png"
+              alt="Centros funerarios"
+              width="80"
+              height="80"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <span
+            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
+            >Centros funerarios</span
+          >
+        </button>
+
+        <button
+          type="button"
+          data-occasion="Ramos"
+          data-active="false"
+          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
+        >
+          <div
+            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
+          >
+            <img
+              src="/imagenes/cat-ramos@2x.png"
+              alt="Ramos de condolencias"
+              width="80"
+              height="80"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <span
+            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
+            >Ramos</span
+          >
+        </button>
+
+        <button
+          type="button"
+          data-occasion="Plantas"
+          data-active="false"
+          class="flex flex-col items-center gap-2 rounded-none px-2 py-3 text-ink transition hover:bg-wine-soft/60 data-[active=true]:bg-wine-soft data-[active=true]:text-wine"
+        >
+          <div
+            class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-none border border-line bg-circle sm:h-24 sm:w-24"
+          >
+            <img
+              src="/imagenes/cat-plantas@2x.png"
+              alt="Plantas de paz"
+              width="80"
+              height="80"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <span
+            class="max-w-[120px] text-center text-xs leading-tight font-medium text-ink-secondary sm:text-[13px]"
+            >Plantas</span
+          >
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Arreglos Funerarios Section -->
+  <section
+    id="arreglos-funerarios"
+    aria-labelledby="funerarios-heading"
+    class="bg-page py-10 sm:py-14"
+  >
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="mb-6 flex items-end justify-between gap-4">
         <div>
-          <span class="text-[11px] font-semibold tracking-[0.22em] text-wine"
-            >PEDIDO ESPECIAL</span
+          <span
+            class="text-[11px] font-semibold tracking-[0.22em] text-wine sm:text-xs"
+            >A R R E G L O S &nbsp; F U N E R A R I O S</span
           >
           <h2
-            id="cart-title"
-            class="mt-1 font-serif text-2xl font-semibold text-ink"
+            id="funerarios-heading"
+            class="mt-1 font-serif text-2xl font-semibold text-ink sm:text-3xl lg:text-4xl"
           >
-            Tu carrito
+            Un adiós con flores
           </h2>
         </div>
-        <button
-          type="button"
-          data-close-dialog
-          aria-label="Cerrar carrito"
-          class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
+        <a
+          href="#arreglos-funerarios"
+          id="ver-todo-link"
+          class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-wine transition hover:text-wine-hover"
         >
-          <svg class="h-5 w-5" aria-hidden="true"
-            ><use href="#i-close"></use></svg
-          >
-        </button>
-      </div>
-
-      <div id="empty-cart" class="px-6 py-10 text-center">
-        <svg class="mx-auto block h-10 w-10 text-muted-light" aria-hidden="true"
-          ><use href="#i-bag"></use></svg
-        >
-        <h3 class="mt-3 mb-2 font-serif text-xl text-ink">
-          Tu carrito está vacío.
-        </h3>
-        <p class="mb-5 text-[13.5px] text-muted">
-          Selecciona un arreglo para honrar su memoria.
-        </p>
-        <button
-          type="button"
-          data-close-dialog
-          class="inline-flex items-center gap-2 rounded-full bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
-        >
-          Explorar arreglos
-        </button>
-      </div>
-
-      <div
-        id="cart-items"
-        class="flex max-h-[40vh] flex-col gap-3 overflow-y-auto p-5"
-      >
-      </div>
-
-      <div id="cart-summary" hidden class="border-t border-line p-5">
-        <div
-          class="mb-2 flex items-center justify-between text-sm text-ink-secondary"
-        >
-          <span>Subtotal</span>
-          <strong id="cart-total" class="text-base font-bold text-ink"
-            >$0 MXN</strong
-          >
-        </div>
-        <p class="mb-3 text-[11.5px] text-muted">
-          Entrega en Monterrey y zona conurbada incluida según zona.
-        </p>
-        <button
-          id="checkout"
-          type="button"
-          class="flex w-full items-center justify-center gap-2 rounded-full bg-wine px-5 py-3 text-sm font-semibold text-white transition hover:bg-wine-hover disabled:opacity-50"
-        >
-          Consultar pedido por WhatsApp <svg class="h-4 w-4" aria-hidden="true"
+          Ver todo <svg class="h-3.5 w-3.5" aria-hidden="true"
             ><use href="#i-arrow"></use></svg
           >
-        </button>
+        </a>
       </div>
-    </dialog>
 
-    <!-- Cart Item Template -->
-    <template id="cart-item-template">
-      <article
-        class="flex items-start gap-3 rounded-xl border border-line bg-white p-3"
+      <!-- Grid de productos (tarjeta compartida) -->
+      <div
+        id="product-grid"
+        class="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4"
       >
-        <img
-          width="72"
-          height="72"
-          alt=""
-          class="h-[72px] w-[72px] shrink-0 rounded-lg object-cover"
-        />
-        <div class="flex min-w-0 flex-1 flex-col gap-1">
-          <h3 class="truncate text-sm font-semibold text-ink"></h3>
-          <p data-cart-price class="text-[13px] font-bold text-wine"></p>
-          <div
-            class="inline-flex w-fit items-center gap-2 rounded-full border border-line px-2 py-1"
-          >
-            <button
-              type="button"
-              data-cart-action="decrease"
-              aria-label="Disminuir cantidad"
-              class="inline-flex h-6 w-6 items-center justify-center rounded-full text-ink transition hover:bg-wine-soft hover:text-wine"
-            >
-              <svg class="h-3.5 w-3.5" aria-hidden="true"
-                ><use href="#i-minus"></use></svg
-              >
-            </button>
-            <span data-quantity class="text-[13px] font-semibold text-ink"
-              >1</span
-            >
-            <button
-              type="button"
-              data-cart-action="increase"
-              aria-label="Aumentar cantidad"
-              class="inline-flex h-6 w-6 items-center justify-center rounded-full text-ink transition hover:bg-wine-soft hover:text-wine"
-            >
-              <svg class="h-3.5 w-3.5" aria-hidden="true"
-                ><use href="#i-plus"></use></svg
-              >
-            </button>
-          </div>
-        </div>
+        {SECCIONES.flatMap((sec) =>
+          sec.articulos.map((a) => (
+            <ProductCard
+              producto={{
+                id: a.id,
+                nombre: a.nombre,
+                precio: a.precio,
+                imagen: a.imagen,
+                alt: a.alt,
+                occasions: a.occasions,
+              }}
+            />
+          ))
+        )}
+      </div>
+      <div id="empty-products" hidden class="px-4 py-12 text-center">
+        <p class="mb-4 text-base text-muted">
+          No se encontraron arreglos con esa selección.
+        </p>
         <button
           type="button"
-          data-cart-action="remove"
-          aria-label="Eliminar producto"
-          class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted transition hover:bg-wine-soft hover:text-wine"
+          id="reset-empty"
+          class="inline-flex items-center gap-2 rounded-none bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
         >
-          <svg class="h-4 w-4" aria-hidden="true"
-            ><use href="#i-close"></use></svg
-          >
+          Ver todos los arreglos
         </button>
-      </article>
-    </template>
-
-    <!-- About Dialog -->
-
-    <!-- Contact Dialog -->
-    <dialog
-      id="contact-dialog"
-      aria-labelledby="contact-title"
-      class="relative m-auto w-[min(94vw,520px)] rounded-2xl border border-line bg-white p-6 text-left text-ink shadow-2xl backdrop:bg-black/50 sm:p-8"
-    >
-      <button
-        type="button"
-        data-close-dialog
-        aria-label="Cerrar contacto"
-        class="absolute top-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-secondary transition hover:bg-wine-soft hover:text-wine"
-      >
-        <svg class="h-5 w-5" aria-hidden="true"><use href="#i-close"></use></svg
-        >
-      </button>
-      <span class="text-[11px] font-semibold tracking-[0.22em] text-wine"
-        >ATENCIÓN INMEDIATA 24/7</span
-      >
-      <h2
-        id="contact-title"
-        class="mt-2 font-serif text-3xl font-semibold text-ink"
-      >
-        Estamos para apoyarte
-      </h2>
-      <p id="contact-copy" class="mt-3 text-sm leading-relaxed text-muted">
-        Comunícate directamente con nosotros para coordinar la entrega o
-        personalizar la cinta con el mensaje de condolencias.
-      </p>
-      <a
-        href="https://api.whatsapp.com/send?phone=528116176724&text=Hola,%20necesito%20informaci%C3%B3n%20sobre%20un%20arreglo%20funerario"
-        target="_blank"
-        rel="noopener"
-        class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
-      >
-        Escribir por WhatsApp <svg class="h-4 w-4" aria-hidden="true"
-          ><use href="#i-arrow"></use></svg
-        >
-      </a>
-    </dialog>
-
-    <!-- Toast Notification -->
-    <div
-      id="toast"
-      role="status"
-      aria-live="polite"
-      hidden
-      class="fixed bottom-4 left-1/2 z-[90] w-max max-w-[92vw] -translate-x-1/2 overflow-hidden rounded-full bg-ink px-4 py-2.5 text-sm font-medium text-ellipsis whitespace-nowrap text-white shadow-lg"
-    >
-      <svg class="mr-1.5 inline h-4 w-4" aria-hidden="true"
-        ><use href="#i-check"></use></svg
-      >
-      <span></span>
+      </div>
     </div>
-
-    <!-- Scripts -->
-    <script is:inline defer src="/scripts/config.js"></script>
-    <script is:inline defer src="/scripts/tienda.js"></script>
-    <script is:inline>
-      // Extra category filtering for circular buttons
-      document.addEventListener("DOMContentLoaded", () => {
-        const catButtons = document.querySelectorAll("[data-occasion]");
-        catButtons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            catButtons.forEach((b) => {
-              b.dataset.active = "false";
-            });
-            btn.dataset.active = "true";
-          });
-        });
-      });
-    </script>
-  </body>
-</html>
+  </section>
+</Layout>

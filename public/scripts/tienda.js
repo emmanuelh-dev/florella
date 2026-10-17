@@ -1,7 +1,7 @@
 /**
- * Florella: filtros, búsqueda, favoritos y carrito de demostración.
+ * Florella: filtros, búsqueda, favoritos y carrito.
  * Sin librerías ni peticiones externas. Los datos se guardan en este navegador.
- * No confirma pedidos, no cobra y no descuenta inventario.
+ * El pedido se envía por WhatsApp; aquí no se cobra ni se descuenta inventario.
  */
 (() => {
   'use strict';
@@ -14,17 +14,21 @@
   const normalize = (value) => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 
   const cards = $$('[data-product]');
-  const products = cards.map((card, index) => ({
-    id: card.dataset.id,
-    name: card.dataset.name,
-    price: Number(card.dataset.price),
-    occasions: (card.dataset.occasions || '').split('|'),
-    image: card.querySelector('img').getAttribute('src'),
-    index,
-    card,
-  }));
+  const products = cards.map((card, index) => {
+    const img = card.querySelector('img');
+    return {
+      id: card.dataset.id,
+      name: card.dataset.name,
+      price: Number(card.dataset.price),
+      occasions: (card.dataset.occasions || '').split('|'),
+      image: img ? img.getAttribute('src') : '',
+      index,
+      card,
+    };
+  });
   const productById = new Map(products.map((product) => [product.id, product]));
   const state = { occasion: 'Todas', maxPrice: 2500, query: '', order: 'featured', favoritesOnly: false };
+  const hasPriceFilter = !!$('#max-price');
   const CART_KEY = 'florella-cart-v1';
   const FAVORITES_KEY = 'florella-favorites-v1';
 
@@ -37,13 +41,23 @@
     try { localStorage.setItem(key, JSON.stringify(value)); }
     catch { /* El carrito sigue funcionando en memoria durante esta visita. */ }
   }
+
+  // El carrito guarda los datos de cada producto para sobrevivir entre páginas.
   const storedCart = readStored(CART_KEY, []);
   const cart = new Map();
   if (Array.isArray(storedCart)) {
     storedCart.forEach((item) => {
-      if (item && productById.has(item.id) && Number.isSafeInteger(item.quantity) && item.quantity > 0) {
-        cart.set(item.id, Math.min(item.quantity, 99));
-      }
+      if (!item || !item.id) return;
+      const qty = Number.isSafeInteger(item.qty) ? item.qty : (Number.isSafeInteger(item.quantity) ? item.quantity : 0);
+      if (qty <= 0) return;
+      const known = productById.get(item.id);
+      cart.set(item.id, {
+        id: item.id,
+        name: item.name || (known ? known.name : 'Arreglo'),
+        price: Number.isFinite(Number(item.price)) ? Number(item.price) : (known ? known.price : 0),
+        image: item.image || (known ? known.image : ''),
+        qty: Math.min(qty, 99),
+      });
     });
   }
   const storedFavorites = readStored(FAVORITES_KEY, []);
@@ -70,7 +84,7 @@
     let shown = 0;
     ordered.forEach((product) => {
       const matches = (state.occasion === 'Todas' || product.occasions.includes(state.occasion))
-        && product.price <= state.maxPrice
+        && (!hasPriceFilter || product.price <= state.maxPrice)
         && (!query || normalize(product.name + ' ' + product.occasions.join(' ')).includes(query))
         && (!state.favoritesOnly || favorites.has(product.id));
       product.card.hidden = !matches;
@@ -100,7 +114,8 @@
 
   function resetFilters() {
     Object.assign(state, { occasion: 'Todas', maxPrice: 2500, query: '', order: 'featured', favoritesOnly: false });
-    $('#search-input').value = '';
+    const searchInputEl = $('#search-input');
+    if (searchInputEl) searchInputEl.value = '';
     const maxPriceInput = $('#max-price');
     if (maxPriceInput) maxPriceInput.value = '2500';
     const sortReset = $('#sort');
@@ -133,17 +148,20 @@
   const openSearch = $('#open-search');
   if (openSearch) openSearch.addEventListener('click', () => {
     const panel = $('#search-panel');
+    if (!panel) return;
     panel.hidden = !panel.hidden;
-    $('#open-search').setAttribute('aria-expanded', String(!panel.hidden));
-    if (!panel.hidden) $('#search-input').focus();
+    openSearch.setAttribute('aria-expanded', String(!panel.hidden));
+    if (!panel.hidden && searchInput) searchInput.focus();
   });
   function closeSearch() {
-    $('#search-panel').hidden = true;
-    $('#open-search').setAttribute('aria-expanded', 'false');
-    $('#search-input').value = '';
+    const panel = $('#search-panel');
+    if (!panel) return;
+    panel.hidden = true;
+    if (openSearch) openSearch.setAttribute('aria-expanded', 'false');
+    if (searchInput) searchInput.value = '';
     state.query = '';
     applyFilters();
-    $('#open-search').focus();
+    if (openSearch) openSearch.focus();
   }
   const closeSearchBtn = $('#close-search');
   if (closeSearchBtn) closeSearchBtn.addEventListener('click', closeSearch);
@@ -153,8 +171,9 @@
     $$('[data-favorite]').forEach((button) => {
       const active = favorites.has(button.dataset.favorite);
       const product = productById.get(button.dataset.favorite);
+      const name = product ? product.name : 'este arreglo';
       button.setAttribute('aria-pressed', String(active));
-      button.setAttribute('aria-label', (active ? 'Quitar ' : 'Guardar ') + product.name + (active ? ' de favoritos' : ' en favoritos'));
+      button.setAttribute('aria-label', (active ? 'Quitar ' : 'Guardar ') + name + (active ? ' de favoritos' : ' en favoritos'));
     });
   }
   $$('[data-favorite]').forEach((button) => button.addEventListener('click', () => {
@@ -176,67 +195,97 @@
   // Un teléfono vacío o inválido mantiene desactivado el contacto comercial.
   const whatsapp = String(window.FLORELLA_CONFIG?.whatsapp || '').replace(/\D/g, '');
   const whatsappReady = /^[1-9]\d{9,14}$/.test(whatsapp);
+  const orderWhatsapp = String(window.FLORELLA_CONFIG?.orderWhatsapp || whatsapp || '').replace(/\D/g, '');
+  const orderReady = /^[1-9]\d{9,14}$/.test(orderWhatsapp);
 
   function renderCart() {
     const list = $('#cart-items');
-    if (!list) return;
-    list.replaceChildren();
     let total = 0;
     let count = 0;
-    cart.forEach((quantity, id) => {
-      const product = productById.get(id);
-      if (!product) return;
-      count += quantity;
-      total += product.price * quantity;
-      const row = $('#cart-item-template').content.firstElementChild.cloneNode(true);
-      row.dataset.cartItem = id;
-      row.querySelector('img').src = product.image;
-      row.querySelector('img').alt = product.name;
-      row.querySelector('h3').textContent = product.name;
-      row.querySelector('[data-cart-price]').textContent = money(product.price) + ' MXN';
-      row.querySelector('[data-quantity]').textContent = String(quantity);
-      const labels = { decrease: 'Disminuir ', increase: 'Aumentar ', remove: 'Eliminar ' };
-      row.querySelectorAll('[data-cart-action]').forEach((button) => {
-        button.dataset.id = id;
-        button.setAttribute('aria-label', labels[button.dataset.cartAction] + product.name);
-        if (button.dataset.cartAction === 'increase') button.disabled = quantity >= 99;
+    if (list) {
+      list.replaceChildren();
+      cart.forEach((item) => {
+        count += item.qty;
+        total += item.price * item.qty;
+        const template = $('#cart-item-template');
+        if (!template) return;
+        const row = template.content.firstElementChild.cloneNode(true);
+        row.dataset.cartItem = item.id;
+        row.querySelector('img').src = item.image;
+        row.querySelector('img').alt = item.name;
+        row.querySelector('h3').textContent = item.name;
+        row.querySelector('[data-cart-price]').textContent = money(item.price) + ' MXN';
+        row.querySelector('[data-quantity]').textContent = String(item.qty);
+        const labels = { decrease: 'Disminuir ', increase: 'Aumentar ', remove: 'Eliminar ' };
+        row.querySelectorAll('[data-cart-action]').forEach((button) => {
+          button.dataset.id = item.id;
+          button.setAttribute('aria-label', labels[button.dataset.cartAction] + item.name);
+          if (button.dataset.cartAction === 'increase') button.disabled = item.qty >= 99;
+        });
+        list.append(row);
       });
-      list.append(row);
-    });
-    $('[data-cart-count]').textContent = String(count);
-    $('[data-open-dialog="cart-dialog"]').setAttribute('aria-label', 'Abrir carrito, ' + count + (count === 1 ? ' producto' : ' productos'));
-    $('#cart-total').textContent = money(total) + ' MXN';
-    $('#empty-cart').hidden = count > 0;
-    $('#cart-summary').hidden = count === 0;
-    $('#checkout').disabled = count === 0 || !whatsappReady;
-    writeStored(CART_KEY, [...cart].map(([id, quantity]) => ({ id, quantity })));
+    } else {
+      cart.forEach((item) => { count += item.qty; total += item.price * item.qty; });
+    }
+    const badge = $('[data-cart-count]');
+    if (badge) badge.textContent = String(count);
+    const cartButton = $('[data-open-dialog="cart-dialog"]');
+    if (cartButton) cartButton.setAttribute('aria-label', 'Abrir carrito, ' + count + (count === 1 ? ' producto' : ' productos'));
+    const cartTotal = $('#cart-total');
+    if (cartTotal) cartTotal.textContent = money(total) + ' MXN';
+    const emptyCart = $('#empty-cart');
+    if (emptyCart) emptyCart.hidden = count > 0;
+    const subtotalEl = $('#cart-subtotal');
+    if (subtotalEl) subtotalEl.hidden = count === 0;
+    writeStored(CART_KEY, [...cart.values()].map((item) => ({ id: item.id, name: item.name, price: item.price, image: item.image, qty: item.qty })));
+  }
+
+  function addToCart(id, fallback) {
+    const known = productById.get(id);
+    const existing = cart.get(id);
+    const qty = existing ? existing.qty : 0;
+    if (qty >= 99) { notify('El máximo es de 99 unidades por arreglo.'); return; }
+    const base = existing || {
+      id,
+      name: (fallback && fallback.name) || (known ? known.name : 'Arreglo'),
+      price: (fallback && Number(fallback.price)) || (known ? known.price : 0),
+      image: (fallback && fallback.image) || (known ? known.image : ''),
+      qty: 0,
+    };
+    base.qty = qty + 1;
+    cart.set(id, base);
+    renderCart();
+    notify(base.name + ' se agregó a tu carrito.');
   }
   $$('[data-add]').forEach((button) => button.addEventListener('click', () => {
-    const id = button.dataset.add;
-    const current = cart.get(id) || 0;
-    if (current >= 99) { notify('El máximo es de 99 unidades por arreglo.'); return; }
-    cart.set(id, current + 1);
-    renderCart();
-    notify(productById.get(id).name + ' se agregó a tu carrito.');
+    addToCart(button.dataset.add, {
+      name: button.dataset.name,
+      price: button.dataset.price,
+      image: button.dataset.image,
+    });
   }));
+
   const cartItems = $('#cart-items');
   if (cartItems) cartItems.addEventListener('click', (event) => {
     const button = event.target.closest('[data-cart-action]');
     if (!button) return;
     const id = button.dataset.id;
     const action = button.dataset.cartAction;
-    const quantity = cart.get(id) || 0;
+    const item = cart.get(id);
+    if (!item) return;
+    const quantity = item.qty;
     if (action === 'remove' || (action === 'decrease' && quantity <= 1)) cart.delete(id);
-    else if (action === 'decrease') cart.set(id, quantity - 1);
-    else if (action === 'increase' && quantity < 99) cart.set(id, quantity + 1);
+    else if (action === 'decrease') item.qty = quantity - 1;
+    else if (action === 'increase' && quantity < 99) item.qty = quantity + 1;
     renderCart();
     // Conserva el foco de teclado después de volver a dibujar la cantidad.
-    const next = Array.from($('#cart-items').querySelectorAll('[data-cart-action]')).find((item) => item.dataset.id === id && item.dataset.cartAction === action);
+    const next = Array.from($('#cart-items').querySelectorAll('[data-cart-action]')).find((el) => el.dataset.id === id && el.dataset.cartAction === action);
     (next || $('#cart-dialog').querySelector('[data-close-dialog]')).focus();
   });
 
   $$('[data-open-dialog]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.getElementById(button.dataset.openDialog);
+    if (!dialog) return;
     if (!dialog.open) dialog.showModal();
     document.body.classList.add('overflow-hidden');
   }));
@@ -251,24 +300,42 @@
     });
   });
 
-  function openWhatsApp(message) {
-    if (!whatsappReady) return;
-    // Abre una conversación; la persona revisa y envía el mensaje por su cuenta.
-    window.open('https://wa.me/' + whatsapp + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+  function openWhatsAppTo(number, message) {
+    if (!/^[1-9]\d{9,14}$/.test(number)) return;
+    window.open('https://wa.me/' + number + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
   }
-  const checkoutBtn = $('#checkout');
-  if (checkoutBtn) checkoutBtn.addEventListener('click', () => {
-    if (!cart.size || !whatsappReady) return;
-    const lines = ['Hola, Florella. Me gustaría consultar disponibilidad para este pedido:', ''];
+  function openWhatsApp(message) { openWhatsAppTo(whatsapp, message); }
+
+  // Solicitud de ofrenda: carrito + formulario -> WhatsApp.
+  const orderForm = $('#order-form');
+  if (orderForm) orderForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!orderReady) { notify('Falta configurar el número de WhatsApp del pedido.'); return; }
+    const data = new FormData(orderForm);
+    const val = (key) => String(data.get(key) || '').trim();
+    const lines = ['Hola, quiero solicitar una ofrenda:', ''];
     let subtotal = 0;
-    cart.forEach((quantity, id) => {
-      const product = productById.get(id);
-      subtotal += product.price * quantity;
-      lines.push(quantity + ' × ' + product.name + ' — ' + money(quantity * product.price) + ' MXN');
+    cart.forEach((item) => {
+      subtotal += item.price * item.qty;
+      lines.push(item.qty + ' × ' + item.name + ' — ' + money(item.price * item.qty) + ' MXN');
     });
-    lines.push('', 'Subtotal: ' + money(subtotal) + ' MXN', '¿Me ayudan a confirmar entrega, disponibilidad y total?');
-    openWhatsApp(lines.join('\n'));
+    if (cart.size) lines.push('', 'Subtotal: ' + money(subtotal) + ' MXN');
+    lines.push('', 'Datos de entrega:');
+    const campos = [
+      ['Fecha de entrega', val('fechaEntrega')],
+      ['Rango de horario', val('rangoHorario')],
+      ['Nombre de la persona fallecida (+)', val('fallecido')],
+      ['Dirección de envío o Capillas', val('direccion')],
+      ['Texto en listón', val('liston')],
+      ['Teléfono de contacto', val('telefono')],
+      ['Rango de horario de servicio/entrega', val('horarioServicio')],
+      ['Foto de la ofrenda y combinación de colores', val('fotoColores')],
+    ];
+    campos.forEach(([label, value]) => { if (value) lines.push(label + ': ' + value); });
+    lines.push('', 'Enviaré la foto de referencia por este chat.');
+    openWhatsAppTo(orderWhatsapp, lines.join('\n'));
   });
+
   if (whatsappReady) {
     const contactWaBtn = $('#contact-whatsapp');
     if (contactWaBtn) contactWaBtn.disabled = false;
@@ -276,14 +343,9 @@
     if (contactCopy) contactCopy.textContent = '¿Buscas algo especial? Escríbenos y cuéntanos qué te gustaría regalar. Te ayudamos a encontrar el detalle.';
     const contactDemoNote = $('#contact-demo-note');
     if (contactDemoNote) contactDemoNote.hidden = true;
-    const checkoutNote = $('#checkout-note');
-    if (checkoutNote) checkoutNote.textContent = 'Se abrirá WhatsApp con tu lista. El pedido se confirma directamente con la florería; aquí no se realizan cobros.';
   }
   const contactWa2 = $('#contact-whatsapp');
   if (contactWa2) contactWa2.addEventListener('click', () => openWhatsApp('Hola, Florella. Me gustaría información sobre sus arreglos.'));
-
-
-
 
   renderFavorites();
   renderCart();
