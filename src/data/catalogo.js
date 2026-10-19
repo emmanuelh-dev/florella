@@ -30,12 +30,15 @@ const CATALOGOS = {
     id: 'cat_hI3DcBZRTZld1yTUC27djSPfZp3hr2Ev',
     snapshot: snapshotSoloOfrendas,
     // Orden en el que se muestran las secciones.
-    orden: ['coronas', 'arreglos', 'canastillas'],
+    orden: ['coronas', 'ofrenda-floral', 'canastillas'],
     // Slugs "bonitos" para las categorias conocidas del catalogo funerario.
+    // Se mantienen los nombres viejos por si el catalogo vuelve atras.
     slugOverrides: {
-      'Arreglos Fúnebres': 'arreglos',
-      'Canastillas de Peregrinación': 'canastillas',
+      'Coronas': 'coronas',
       'Coronas Fúnebres': 'coronas',
+      'Ofrenda Floral': 'ofrenda-floral',
+      'Arreglos Fúnebres': 'ofrenda-floral',
+      'Canastillas de Peregrinación': 'canastillas',
     },
   },
 };
@@ -67,16 +70,19 @@ function normalizar(data, config) {
       while (usados.has(slug)) slug = `${base}-${n++}`;
       usados.add(slug);
 
-      const productos = (cat.products || []).map((prod) => {
-        const img = prod.images && prod.images[0];
-        return {
-          id: prod.id,
-          nombre: prod.name,
-          precio: Number(prod.price) || 0,
-          disponible: prod.available !== false,
-          imagen: img ? img.url : null,
-        };
-      });
+      const productos = (cat.products || [])
+        .map((prod) => {
+          const img = prod.images && prod.images[0];
+          return {
+            id: prod.id,
+            nombre: prod.name,
+            precio: Number(prod.price) || 0,
+            disponible: prod.available !== false,
+            imagen: img ? img.url : null,
+          };
+        })
+        // Precio: del mas caro al mas barato por defecto.
+        .sort((a, b) => b.precio - a.precio);
 
       return { id: cat.id, nombre, slug, productos };
     })
