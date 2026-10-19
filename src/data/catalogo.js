@@ -76,6 +76,7 @@ function normalizar(data, config) {
           return {
             id: prod.id,
             nombre: prod.name,
+            descripcion: prod.description || '',
             precio: Number(prod.price) || 0,
             disponible: prod.available !== false,
             imagen: img ? img.url : null,

@@ -5,6 +5,7 @@ const { producto } = Astro.props;
 const {
   id,
   nombre,
+  descripcion = '',
   precio,
   imagen = null,
   alt = nombre,
@@ -20,6 +21,7 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
   data-product
   data-id={id}
   data-name={nombre}
+  data-description={descripcion}
   data-price={precio}
   data-occasions={occasions.join('|')}
   class="group flex flex-col overflow-hidden rounded-none bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
@@ -51,10 +53,16 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
     </div>
     <button
       type="button"
+      data-open-product
+      aria-label={'Ver información de ' + nombre}
+      class="absolute inset-0 z-[1] cursor-pointer"
+    ></button>
+    <button
+      type="button"
       data-favorite={id}
       aria-label={'Guardar ' + nombre + ' en favoritos'}
       aria-pressed="false"
-      class="absolute top-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-none bg-white/90 text-ink shadow-sm backdrop-blur transition hover:text-wine"
+      class="absolute top-3 right-3 z-[2] inline-flex h-9 w-9 items-center justify-center rounded-none bg-white/90 text-ink shadow-sm backdrop-blur transition hover:text-wine"
     >
       <svg class="h-[18px] w-[18px]" aria-hidden="true"
         ><use href="#i-heart"></use></svg
@@ -62,7 +70,7 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
     </button>
     {
       !disponible && (
-        <span class="absolute top-3 left-3 rounded-none bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-white">
+        <span class="pointer-events-none absolute top-3 left-3 rounded-none bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-white">
           Agotado
         </span>
       )

@@ -240,6 +240,44 @@
     });
   }));
 
+  // Ficha del arreglo: se abre al tocar la foto.
+  const productDialog = $('#product-dialog');
+  function openProductDialog(card) {
+    if (!productDialog || !card) return;
+    const img = card.querySelector('img');
+    const imagen = img ? img.getAttribute('src') || '' : '';
+    const nombre = card.dataset.name || 'Arreglo';
+    const precio = Number(card.dataset.price) || 0;
+    const descripcion = (card.dataset.description || '').trim();
+    productDialog.querySelector('[data-product-image]').src = imagen;
+    productDialog.querySelector('[data-product-image]').alt = nombre;
+    productDialog.querySelector('[data-product-name]').textContent = nombre;
+    productDialog.querySelector('[data-product-price]').textContent = money(precio) + ' MXN';
+    const descEl = productDialog.querySelector('[data-product-description]');
+    descEl.textContent = descripcion;
+    descEl.hidden = !descripcion;
+    const add = productDialog.querySelector('[data-add-product]');
+    add.dataset.id = card.dataset.id || '';
+    add.dataset.name = nombre;
+    add.dataset.price = String(precio);
+    add.dataset.image = imagen;
+    if (!productDialog.open) productDialog.showModal();
+    document.body.classList.add('overflow-hidden');
+  }
+  document.addEventListener('click', (event) => {
+    const opener = event.target.closest ? event.target.closest('[data-open-product]') : null;
+    if (opener) openProductDialog(opener.closest('[data-product]'));
+  });
+  const addFromDialog = productDialog && productDialog.querySelector('[data-add-product]');
+  if (addFromDialog) addFromDialog.addEventListener('click', () => {
+    addToCart(addFromDialog.dataset.id, {
+      name: addFromDialog.dataset.name,
+      price: addFromDialog.dataset.price,
+      image: addFromDialog.dataset.image,
+    });
+    productDialog.close();
+  });
+
   const cartItems = $('#cart-items');
   if (cartItems) cartItems.addEventListener('click', (event) => {
     const button = event.target.closest('[data-cart-action]');

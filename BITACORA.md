@@ -3,6 +3,7 @@
 Rastro corto de cambios. Lo más reciente arriba.
 
 ## 2026-10
+- **Ficha del arreglo**: al tocar la foto se abre un modal con foto, nombre, precio y descripción (si el arreglo tiene); si no tiene, solo la foto. Navegación separada por catálogo (Florella vs Solo Ofrendas).
 - **Catálogo**: precios de **mayor a menor** por defecto en todas las vistas; slugs con override + fallback; categorías renombradas en Mimir (`Coronas`, `Ofrenda Floral`); test de build **dinámico** (descubre las categorías del build).
 - **Iconos**: arreglado el trazo de los `<use>` (el menú ☰, las flechas, ✕, + y − salían invisibles); ahora todos los iconos de Lucide se ven.
 - **SEO**: canonical, Open Graph, Twitter, JSON-LD (Florist), `sitemap.xml` y `robots.txt`; títulos con Monterrey.

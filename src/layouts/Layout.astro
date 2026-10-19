@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { getCategoriasSoloOfrendas } from "../data/catalogo.js";
 
 const {
   title = "Florella · Florería en Monterrey",
@@ -8,8 +9,24 @@ const {
 } = Astro.props;
 
 const ruta = Astro.url.pathname;
-const enInicio = ruta === "/";
 const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
+
+// Cada catálogo tiene su propia navegación.
+const categoriasSolo = enSoloOfrendas ? await getCategoriasSoloOfrendas() : [];
+const inicioHref = enSoloOfrendas ? "/solo-ofrendas" : "/";
+const navegacion = enSoloOfrendas
+  ? [
+      { href: "/solo-ofrendas", texto: "Inicio", activo: ruta === "/solo-ofrendas" },
+      ...categoriasSolo.map((cat) => ({
+        href: `/solo-ofrendas/${cat.slug}`,
+        texto: cat.nombre,
+        activo: ruta === `/solo-ofrendas/${cat.slug}`,
+      })),
+    ]
+  : [
+      { href: "/", texto: "Inicio", activo: ruta === "/" },
+      { href: "/solo-ofrendas", texto: "Solo Ofrendas", activo: false },
+    ];
 
 // SEO: URLs absolutas para canonical y Open Graph (Astro.site sale de astro.config).
 const base = Astro.site ?? new URL(Astro.url.origin);
@@ -154,7 +171,7 @@ const negocio = {
         class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
       >
         <a
-          href="/"
+          href={inicioHref}
           aria-label="Florella, inicio"
           class="flex shrink-0 items-center"
         >
@@ -169,30 +186,22 @@ const negocio = {
           aria-label="Navegación principal"
           class="hidden items-center gap-1 md:flex"
         >
-          <a
-            href="/"
-            aria-current={enInicio ? "page" : undefined}
-            class:list={[
-              "rounded-none px-3 py-2 text-[12px] font-semibold tracking-[0.1em] uppercase transition",
-              enInicio
-                ? "bg-wine-soft text-wine"
-                : "text-ink-secondary hover:bg-wine-soft/60 hover:text-wine",
-            ]}
-            >Inicio</a
-          >
-
-          <a
-            href="/solo-ofrendas"
-            aria-current={enSoloOfrendas ? "page" : undefined}
-            class:list={[
-              "rounded-none px-3 py-2 text-[12px] font-semibold tracking-[0.1em] uppercase transition",
-              enSoloOfrendas
-                ? "bg-wine-soft text-wine"
-                : "text-ink-secondary hover:bg-wine-soft/60 hover:text-wine",
-            ]}
-            >Solo Ofrendas</a
-          >
-
+          {
+            navegacion.map((item) => (
+              <a
+                href={item.href}
+                aria-current={item.activo ? "page" : undefined}
+                class:list={[
+                  "rounded-none px-3 py-2 text-[12px] font-semibold tracking-[0.1em] uppercase transition",
+                  item.activo
+                    ? "bg-wine-soft text-wine"
+                    : "text-ink-secondary hover:bg-wine-soft/60 hover:text-wine",
+                ]}
+              >
+                {item.texto}
+              </a>
+            ))
+          }
           <button
             type="button"
             data-open-dialog="contact-dialog"
@@ -569,6 +578,64 @@ const negocio = {
       </article>
     </template>
 
+    <!-- Ficha del arreglo (se abre al tocar la foto) -->
+    <dialog
+      id="product-dialog"
+      aria-labelledby="product-title"
+      class="relative m-auto max-h-[92dvh] w-[min(94vw,860px)] overflow-y-auto rounded-none border border-line bg-white p-0 text-ink shadow-2xl backdrop:bg-black/50"
+    >
+      <button
+        type="button"
+        data-close-dialog
+        aria-label="Cerrar ficha"
+        class="absolute top-3 right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-none bg-white/90 text-ink-secondary shadow-sm backdrop-blur transition hover:text-wine"
+      >
+        <svg class="h-5 w-5" aria-hidden="true"
+          ><use href="#i-close"></use></svg
+        >
+      </button>
+      <div class="grid sm:grid-cols-2">
+        <div class="aspect-[3/4] bg-card">
+          <img data-product-image alt="" class="h-full w-full object-cover" />
+        </div>
+        <div class="flex flex-col gap-4 p-6 sm:p-8">
+          <span
+            class="text-[10px] font-semibold tracking-[0.28em] text-wine uppercase"
+            >Florella</span
+          >
+          <h2
+            id="product-title"
+            data-product-name
+            class="font-serif text-2xl leading-tight font-semibold text-ink sm:text-3xl"
+          >
+          </h2>
+          <p
+            data-product-price
+            class="font-serif text-xl font-semibold text-wine"
+          >
+          </p>
+          <p
+            data-product-description
+            class="text-sm leading-relaxed whitespace-pre-line text-muted"
+          >
+          </p>
+          <button
+            type="button"
+            data-add-product
+            class="mt-auto inline-flex items-center justify-center gap-2 rounded-none bg-wine px-6 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
+          >
+            <svg class="h-4 w-4" aria-hidden="true"
+              ><use href="#i-bag"></use></svg
+            >
+            Agregar al carrito
+          </button>
+          <p class="text-[11px] text-muted">
+            Entrega en Monterrey y área metropolitana. Pide por WhatsApp.
+          </p>
+        </div>
+      </div>
+    </dialog>
+
     <!-- Menú (móvil) -->
     <dialog
       id="menu-dialog"
@@ -594,16 +661,17 @@ const negocio = {
         </button>
       </div>
       <nav aria-label="Menú" class="flex flex-col p-4">
-        <a
-          href="/"
-          class="border-b border-line px-2 py-4 text-[13px] font-semibold tracking-[0.1em] text-ink uppercase transition hover:text-wine"
-          >Inicio</a
-        >
-        <a
-          href="/solo-ofrendas"
-          class="border-b border-line px-2 py-4 text-[13px] font-semibold tracking-[0.1em] text-ink uppercase transition hover:text-wine"
-          >Solo Ofrendas</a
-        >
+        {
+          navegacion.map((item) => (
+            <a
+              href={item.href}
+              aria-current={item.activo ? "page" : undefined}
+              class="border-b border-line px-2 py-4 text-[13px] font-semibold tracking-[0.1em] text-ink uppercase transition hover:text-wine"
+            >
+              {item.texto}
+            </a>
+          ))
+        }
         <button
           type="button"
           data-open-dialog="contact-dialog"
