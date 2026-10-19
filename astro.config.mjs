@@ -10,6 +10,7 @@ const site = process.env.SITE_URL || 'https://florellaeventosydetalles.com.mx';
 // https://astro.build/config
 export default defineConfig({
   site,
+  image: { domains: ['mimir.bysmax.com'] },
   vite: {
     plugins: [tailwindcss()],
   },

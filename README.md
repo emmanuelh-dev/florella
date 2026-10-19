@@ -41,3 +41,14 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+### Imágenes de los catálogos
+
+Astro genera WebP locales al compilar para Florella y Solo Ofrendas: tarjetas
+con `srcset` de 240–960 px, miniaturas de 56/112 px y fotos de carrito de 144 px.
+Los originales siguen en Mimir. La primera compilación descarga y procesa las
+fotos; las siguientes reutilizan la caché de Astro. Si una foto no se puede
+descargar, la compilación falla en vez de publicar una imagen rota.
+
+Verificación: `npm test`, `npm run build` y `npm run test:build`. Esta última
+comprueba las imágenes del HTML compilado de ambos catálogos y sus categorías.
