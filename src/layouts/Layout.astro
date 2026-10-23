@@ -310,6 +310,7 @@ const negocio = {
 
     <!-- WhatsApp flotante: abre la solicitud con el formulario -->
     <button
+      id="floating-order"
       type="button"
       data-open-dialog="cart-dialog"
       aria-label="Pedir por WhatsApp"
@@ -398,9 +399,12 @@ const negocio = {
           </p>
         </div>
 
-        <form id="order-form" class="space-y-4">
+        <form id="order-form" class="mt-6 space-y-6">
           <p class="text-[11px] font-semibold tracking-[0.18em] text-wine">
             DATOS DE LA OFRENDA
+          </p>
+          <p class="text-sm text-muted">
+            Estos datos son opcionales. Puedes completarlos por WhatsApp.
           </p>
 
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -452,11 +456,10 @@ const negocio = {
           <label
             class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
           >
-            *Texto en listón
+            Texto en listón
             <input
               type="text"
               name="liston"
-              required
               placeholder="Ej. Siempre en nuestros corazones"
               class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             />
@@ -466,11 +469,10 @@ const negocio = {
             <label
               class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
             >
-              *Teléfono de contacto
+              Teléfono de contacto
               <input
                 type="tel"
                 name="telefono"
-                required
                 inputmode="tel"
                 placeholder="10 dígitos"
                 class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
@@ -479,11 +481,10 @@ const negocio = {
             <label
               class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
             >
-              *Rango de horario de servicio/entrega
+              Rango de horario de servicio/entrega
               <input
                 type="text"
                 name="horarioServicio"
-                required
                 placeholder="Ej. 09:00 – 18:00"
                 class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
               />
@@ -493,11 +494,10 @@ const negocio = {
           <label
             class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
           >
-            *Foto de la ofrenda y combinación de colores
+            Foto de la ofrenda y combinación de colores
             <textarea
               name="fotoColores"
               rows="2"
-              required
               placeholder="Describe la ofrenda y los colores. Adjunta la foto en el chat de WhatsApp."
               class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             ></textarea>
@@ -762,7 +762,7 @@ const negocio = {
       role="status"
       aria-live="polite"
       hidden
-      class="fixed bottom-4 left-1/2 z-[90] w-max max-w-[92vw] -translate-x-1/2 overflow-hidden rounded-none bg-ink px-4 py-2.5 text-sm font-medium text-ellipsis whitespace-nowrap text-white shadow-lg"
+      class="fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] left-1/2 z-[90] w-max max-w-[92vw] -translate-x-1/2 overflow-hidden rounded-none bg-ink px-4 py-2.5 text-sm font-medium text-ellipsis whitespace-nowrap text-white shadow-lg"
     >
       <svg class="mr-1.5 inline h-4 w-4" aria-hidden="true"
         ><use href="#i-check"></use></svg
