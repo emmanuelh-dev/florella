@@ -400,74 +400,74 @@ const negocio = {
         </div>
 
         <form id="order-form" class="mt-6 space-y-6">
-          <p class="text-[11px] font-semibold tracking-[0.18em] text-wine">
-            DATOS DE LA OFRENDA
+          <p class="text-base font-semibold text-wine">
+            Datos del pedido
           </p>
           <p class="text-sm text-muted">
-            Estos datos son opcionales. Puedes completarlos por WhatsApp.
+            Datos opcionales. Puedes completarlos por WhatsApp.
           </p>
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div class="grid grid-cols-1 gap-6">
             <label
-              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+              class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
             >
               Fecha de entrega
               <input
                 type="date"
                 name="fechaEntrega"
-                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+                class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
               />
             </label>
             <label
-              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+              class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
             >
-              Rango de horario
+              Horario de entrega
               <input
                 type="text"
                 name="rangoHorario"
-                placeholder="Ej. 10:00 – 13:00"
-                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+                placeholder="10:00 – 13:00"
+                class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
               />
             </label>
           </div>
 
           <label
-            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
           >
-            Nombre de la persona fallecida (+)
+            Nombre del fallecido (+)
             <input
               type="text"
               name="fallecido"
-              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             />
           </label>
 
           <label
-            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
           >
-            Dirección de envío o Capillas
+            Dirección o capilla
             <input
               type="text"
               name="direccion"
-              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             />
           </label>
 
           <label
-            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
           >
             Texto en listón
             <input
               type="text"
               name="liston"
               placeholder="Ej. Siempre en nuestros corazones"
-              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             />
           </label>
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div class="grid grid-cols-1 gap-6">
             <label
-              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+              class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
             >
               Teléfono de contacto
               <input
@@ -475,31 +475,31 @@ const negocio = {
                 name="telefono"
                 inputmode="tel"
                 placeholder="10 dígitos"
-                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+                class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
               />
             </label>
             <label
-              class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+              class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
             >
-              Rango de horario de servicio/entrega
+              Horario de servicio
               <input
                 type="text"
                 name="horarioServicio"
-                placeholder="Ej. 09:00 – 18:00"
-                class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+                placeholder="09:00 – 18:00"
+                class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
               />
             </label>
           </div>
 
           <label
-            class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
+            class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
           >
-            Foto de la ofrenda y combinación de colores
+            Diseño y colores
             <textarea
               name="fotoColores"
               rows="2"
               placeholder="Describe la ofrenda y los colores. Adjunta la foto en el chat de WhatsApp."
-              class="w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+              class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             ></textarea>
           </label>
 

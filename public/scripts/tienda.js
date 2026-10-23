@@ -325,6 +325,11 @@
 
   // Solicitud de ofrenda: carrito + formulario -> WhatsApp.
   const orderForm = $('#order-form');
+  const deliveryDate = orderForm?.elements.namedItem('fechaEntrega');
+  if (deliveryDate && !deliveryDate.value) {
+    const today = new Date();
+    deliveryDate.value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  }
   if (orderForm) orderForm.addEventListener('submit', (event) => {
     event.preventDefault();
     if (!orderReady) { notify('Falta configurar el número de WhatsApp del pedido.'); return; }
