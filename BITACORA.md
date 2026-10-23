@@ -31,3 +31,7 @@ Campo opcional «Referencia o entrecalles» debajo de la dirección, incluido en
 ### Plazos de entrega de Solo Ofrendas
 
 Franja de servicio actualizada por instrucción del propietario: envío exprés en 1 hora y estándar en 3 horas. No se añadieron tarifas ni selección de modalidad al pedido.
+
+### Microsoft Clarity
+
+Snippet del proyecto `z2e7cyheo6` instalado una vez en el head de `src/layouts/Layout.astro`, compartido por todas las páginas. Carga asíncrona sin dependencias nuevas.
