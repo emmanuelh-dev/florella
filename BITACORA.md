@@ -27,3 +27,7 @@ Campo de dirección con sugerencias del servicio de Traccar, Secret `TRACCAR_TOK
 ### Referencias de entrega y números exteriores
 
 Campo opcional «Referencia o entrecalles» debajo de la dirección, incluido en el mensaje de WhatsApp. Si la consulta contiene números, seleccionar una sugerencia conserva el texto original, avisa que el número no está confirmado y no guarda coordenadas aproximadas como domicilio exacto. Prueba aislada reproduce «Janina 105» → «Andador Janina», conserva el domicilio y comprueba ambos campos en el mensaje sin abrir WhatsApp. No incluye tarifas automáticas de envío.
+
+### Plazos de entrega de Solo Ofrendas
+
+Franja de servicio actualizada por instrucción del propietario: envío exprés en 1 hora y estándar en 3 horas. No se añadieron tarifas ni selección de modalidad al pedido.
