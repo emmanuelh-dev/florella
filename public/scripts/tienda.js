@@ -33,7 +33,7 @@
   const state = {
     occasion: 'Todas',
     maxPrice: maxPriceInputEl ? Number(maxPriceInputEl.value) || precioMax : precioMax,
-    order: 'price-desc',
+    order: 'price-asc',
     favoritesOnly: false,
   };
   const CART_KEY = 'florella-cart-v1';
@@ -108,7 +108,7 @@
     const resultsCount = $('#results-count');
     if (resultsCount) resultsCount.textContent = shown + (shown === 1 ? ' arreglo' : ' arreglos') + (state.favoritesOnly ? ' en favoritos' : '');
     const resultsBar = $('#results-bar');
-    if (resultsBar) resultsBar.hidden = state.occasion === 'Todas' && state.maxPrice === precioMax && !state.favoritesOnly && state.order === 'price-desc';
+    if (resultsBar) resultsBar.hidden = state.occasion === 'Todas' && state.maxPrice === precioMax && !state.favoritesOnly && state.order === 'price-asc';
     const emptyProducts = $('#empty-products');
     if (emptyProducts) emptyProducts.hidden = shown > 0;
     const favToggleState = $('#favorites-toggle');
@@ -117,10 +117,10 @@
   }
 
   function resetFilters() {
-    Object.assign(state, { occasion: 'Todas', maxPrice: precioMax, order: 'price-desc', favoritesOnly: false });
+    Object.assign(state, { occasion: 'Todas', maxPrice: precioMax, order: 'price-asc', favoritesOnly: false });
     if (maxPriceInputEl) maxPriceInputEl.value = String(precioMax);
     const sortReset = $('#sort');
-    if (sortReset) sortReset.value = 'price-desc';
+    if (sortReset) sortReset.value = 'price-asc';
     applyFilters();
   }
   $$('[data-occasion]').forEach((button) => button.addEventListener('click', () => {

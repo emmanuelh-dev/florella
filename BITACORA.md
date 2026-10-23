@@ -35,3 +35,7 @@ Franja de servicio actualizada por instrucción del propietario: envío exprés 
 ### Microsoft Clarity
 
 Snippet del proyecto `z2e7cyheo6` instalado una vez en el head de `src/layouts/Layout.astro`, compartido por todas las páginas. Carga asíncrona sin dependencias nuevas.
+
+### Orden del catálogo
+
+Precio de menor a mayor por defecto en datos del catálogo, selector y filtros del navegador. Limpiar filtros restaura ese orden; sigue disponible el orden descendente y por nombre.

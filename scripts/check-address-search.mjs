@@ -35,6 +35,18 @@ try {
         if (url.origin !== `http://127.0.0.1:${server.address().port}`) return route.abort();
         return route.continue();
       });
+      await page.goto(`http://127.0.0.1:${server.address().port}/solo-ofrendas/coronas/`);
+      const prices = () => page.locator('#product-grid [data-product]').evaluateAll((cards) => cards.map((card) => Number(card.dataset.price)));
+      const ascending = await prices();
+      assert.ok(ascending.length > 1);
+      assert.deepEqual(ascending, [...ascending].sort((a, b) => a - b));
+      assert.equal(await page.locator('#sort').inputValue(), 'price-asc');
+      await page.locator('#sort').selectOption('price-desc');
+      assert.deepEqual(await prices(), [...ascending].sort((a, b) => b - a));
+      await page.locator('#clear-filters').click();
+      assert.equal(await page.locator('#sort').inputValue(), 'price-asc');
+      assert.deepEqual(await prices(), ascending);
+      await page.screenshot({ path: `${output}/orden-${width}-${colorScheme}.png` });
       await page.goto(`http://127.0.0.1:${server.address().port}/solo-ofrendas/`);
       const product = await page.locator('[data-product]').first().evaluate((card) => ({
         id: card.dataset.id, name: card.dataset.name, price: Number(card.dataset.price),
