@@ -36,6 +36,17 @@ try {
         return route.continue();
       });
       await page.goto(`http://127.0.0.1:${server.address().port}/solo-ofrendas/`);
+      const product = await page.locator('[data-product]').first().evaluate((card) => ({
+        id: card.dataset.id, name: card.dataset.name, price: Number(card.dataset.price),
+        image: card.querySelector('img').getAttribute('src'), qty: 2,
+      }));
+      await page.evaluate((product) => localStorage.setItem('florella-cart-v1', JSON.stringify([
+        { ...product, image: '/_astro/old-deployment.webp' },
+      ])), product);
+      await page.reload();
+      const cartImage = page.locator('#cart-items img').first();
+      assert.equal(await cartImage.getAttribute('src'), product.image);
+      assert.equal(await page.locator('#cart-items [data-quantity]').first().textContent(), '2');
       await page.evaluate(() => document.querySelector('#order-form').closest('dialog').showModal());
       const input = page.locator('[name="direccion"]');
       await input.fill('ca');

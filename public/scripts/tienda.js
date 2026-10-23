@@ -62,7 +62,7 @@
         id: item.id,
         name: item.name || (known ? known.name : 'Arreglo'),
         price: Number.isFinite(Number(item.price)) ? Number(item.price) : (known ? known.price : 0),
-        image: item.image || (known ? known.image : ''),
+        image: (known ? known.image : '') || item.image || '',
         qty: Math.min(qty, 99),
       });
     });

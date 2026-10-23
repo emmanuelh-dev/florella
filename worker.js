@@ -28,7 +28,7 @@ export default {
       const response = await fetch(target, {
         headers: { Authorization: `Bearer ${env.TRACCAR_TOKEN}`, Accept: 'application/json' },
         signal: AbortSignal.timeout(15000),
-        redirect: 'error',
+        redirect: 'manual',
       });
       if (!response.ok) {
         failureCode = `UPSTREAM_HTTP_${response.status}`;

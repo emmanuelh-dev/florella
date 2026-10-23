@@ -12,10 +12,16 @@ El límite de cinco solicitudes/segundo y cuatro concurrentes es por instancia d
 
 `npm test`: pruebas existentes y pruebas aisladas del Worker (secret saliente, región fija, entrada inválida, assets, filtrado de campos y errores sin exposición interna). `scripts/check-address-search.mjs`: navegador con respuestas interceptadas en escritorio/móvil y claro/oscuro; selección por teclado y escritura manual tras errores. Las capturas están en `docs/evidencias/buscador/`.
 
-10 pruebas funcionales y 6 comprobaciones del build pasan. Capturas de los cuatro perfiles inspeccionadas.
+12 pruebas funcionales y 6 comprobaciones del build pasan. Capturas de los cuatro perfiles inspeccionadas.
 
-`astro build` se comprobó con los snapshots existentes, sin sincronizar el catálogo real. No se usó la API de producción como backend de pruebas ni se verificaron los permisos reales de la cuenta. No se realizó una publicación manual en Cloudflare; un push puede activar el pipeline configurado por el propietario. El token proporcionado caduca el 30 de octubre de 2026 a las 06:00 UTC y debe renovarse como Secret antes de esa fecha.
+`astro build` se comprobó con los snapshots existentes, sin sincronizar el catálogo real. No se usó la API de producción como backend de pruebas ni se verificaron los permisos reales de la cuenta. No se realizó una publicación manual en Cloudflare; un push puede activar el pipeline configurado por el propietario. El Secret fue actualizado por el propietario; su vigencia se administra en Traccar.
 
 ## Diagnóstico de consulta
 
 Los errores 503 incluyen un `code` seguro: `UPSTREAM_HTTP_<estado>`, `UPSTREAM_TIMEOUT`, `UPSTREAM_CONNECTION_FAILED` o `UPSTREAM_INVALID_RESPONSE`. El mismo código aparece en logs de Cloudflare; no registra token, consulta ni cuerpo de la respuesta. El 23 de octubre se confirmó que el secret estaba presente y el token actualizado era aceptado por Traccar; una consulta operativa directa devolvió Capillas del Carmen con HTTP 200. La conexión desde el Worker seguía pendiente de diagnóstico con esta instrumentación.
+
+## Corrección del 503 y del carrito
+
+El Worker usaba `redirect: 'error'`, que Cloudflare no implementa y rechaza con TypeError antes de contactar al servidor. Se cambió a `manual`: las respuestas 3xx se rechazan por la comprobación HTTP existente sin reenviar el token. Referencia: https://developers.cloudflare.com/workers/runtime-apis/request/#properties. Una prueba comprueba explícitamente este comportamiento.
+
+El carrito restaura la imagen del producto actual cuando está en el catálogo de la página, en lugar de preferir la URL con hash guardada antes de un despliegue. Conserva cantidades y pedido. La prueba de navegador reproduce un carrito con imagen antigua y verifica la recuperación; productos ausentes del catálogo de la página conservan la imagen guardada.
