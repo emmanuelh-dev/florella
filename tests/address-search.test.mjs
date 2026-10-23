@@ -30,5 +30,15 @@ test('errores de autenticación no exponen respuesta interna', async (t) => {
   t.mock.method(globalThis, 'fetch', async () => new Response('internal secret', { status: 401 }));
   const response = await worker.fetch(request('/api/address-search?q=capillas'), { TRACCAR_TOKEN: 'private' });
   assert.equal(response.status, 503);
-  assert.equal((await response.text()).includes('secret'), false);
+  const body = await response.json();
+  assert.equal(body.code, 'UPSTREAM_HTTP_401');
+  assert.equal(JSON.stringify(body).includes('secret'), false);
+});
+
+ test('fallos de red tienen diagnóstico sin revelar mensajes ni credenciales', async (t) => {
+  t.mock.method(globalThis, 'fetch', async () => { throw new TypeError('private upstream details'); });
+  const response = await worker.fetch(request('/api/address-search?q=capillas'), { TRACCAR_TOKEN: 'private' });
+  const body = await response.json();
+  assert.equal(body.code, 'UPSTREAM_CONNECTION_FAILED');
+  assert.equal(JSON.stringify(body).includes('private'), false);
 });

@@ -15,3 +15,7 @@ El límite de cinco solicitudes/segundo y cuatro concurrentes es por instancia d
 10 pruebas funcionales y 6 comprobaciones del build pasan. Capturas de los cuatro perfiles inspeccionadas.
 
 `astro build` se comprobó con los snapshots existentes, sin sincronizar el catálogo real. No se usó la API de producción como backend de pruebas ni se verificaron los permisos reales de la cuenta. No se realizó una publicación manual en Cloudflare; un push puede activar el pipeline configurado por el propietario. El token proporcionado caduca el 30 de octubre de 2026 a las 06:00 UTC y debe renovarse como Secret antes de esa fecha.
+
+## Diagnóstico de consulta
+
+Los errores 503 incluyen un `code` seguro: `UPSTREAM_HTTP_<estado>`, `UPSTREAM_TIMEOUT`, `UPSTREAM_CONNECTION_FAILED` o `UPSTREAM_INVALID_RESPONSE`. El mismo código aparece en logs de Cloudflare; no registra token, consulta ni cuerpo de la respuesta. El 23 de octubre se confirmó que el secret estaba presente y el token actualizado era aceptado por Traccar; una consulta operativa directa devolvió Capillas del Carmen con HTTP 200. La conexión desde el Worker seguía pendiente de diagnóstico con esta instrumentación.
