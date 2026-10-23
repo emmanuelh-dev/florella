@@ -30,7 +30,7 @@ try {
         if (url.pathname === '/api/address-search') {
           calls += 1;
           assert.equal(url.searchParams.has('token'), false);
-          return route.fulfill({ json: [{ label: 'Capillas Demo, Monterrey, Nuevo León', latitude: 25.67, longitude: -100.31 }] });
+          return route.fulfill({ json: [{ label: url.searchParams.get('q').startsWith('Janina') ? 'Andador Janina, Nuevo León' : 'Capillas Demo, Monterrey, Nuevo León', latitude: 25.67, longitude: -100.31 }] });
         }
         if (url.origin !== `http://127.0.0.1:${server.address().port}`) return route.abort();
         return route.continue();
@@ -61,6 +61,23 @@ try {
       await page.keyboard.press('Enter');
       assert.equal(await input.inputValue(), 'Capillas Demo, Monterrey, Nuevo León');
       assert.equal(await input.getAttribute('data-latitude'), '25.67');
+      await input.fill('Janina 105');
+      await page.locator('#address-results button').waitFor({ state: 'visible' });
+      await page.locator('#address-results button').first().click();
+      assert.equal(await input.inputValue(), 'Janina 105');
+      assert.equal(await input.getAttribute('data-latitude'), null);
+      await page.getByText('El resultado no confirma el número. Conservamos tu dirección; agrega referencias para la entrega.').waitFor();
+      await page.getByLabel('Referencia o entrecalles').fill('Entre Roble y Pino, portón azul');
+      await page.getByLabel('Referencia o entrecalles').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: `${output}/referencia-${width}-${colorScheme}.png` });
+      const message = await page.evaluate(() => {
+        let target;
+        window.open = (url) => { target = url; return null; };
+        document.querySelector('#order-form').requestSubmit();
+        return new URL(target).searchParams.get('text');
+      });
+      assert.ok(message.includes('Dirección de envío o Capillas: Janina 105'));
+      assert.ok(message.includes('Referencia o entrecalles: Entre Roble y Pino, portón azul'));
       await input.fill('dirección manual');
       assert.equal(await input.getAttribute('data-latitude'), null);
       await page.route('**/api/address-search?*', (route) => route.fulfill({ status: 503, json: { error: 'Demo' } }));

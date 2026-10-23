@@ -348,6 +348,7 @@
       ['Rango de horario', val('rangoHorario')],
       ['Nombre de la persona fallecida (+)', val('fallecido')],
       ['Dirección de envío o Capillas', val('direccion')],
+      ['Referencia o entrecalles', val('referencia')],
       ['Texto en listón', val('liston')],
       ['Teléfono de contacto', val('telefono')],
       ['Rango de horario de servicio/entrega', val('horarioServicio')],

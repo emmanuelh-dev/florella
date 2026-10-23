@@ -459,6 +459,17 @@ const negocio = {
           <p id="address-status" role="status" class="text-sm text-ink-secondary"></p>
           <ul id="address-results" hidden aria-label="Direcciones encontradas" class="max-h-60 overflow-y-auto border border-line bg-white"></ul>
 
+          <label class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary">
+            Referencia o entrecalles
+            <input
+              type="text"
+              name="referencia"
+              maxlength="300"
+              placeholder="Ej. Entre Roble y Pino, portón azul"
+              class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+            />
+          </label>
+
           <label
             class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
           >

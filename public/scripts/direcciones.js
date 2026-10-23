@@ -34,6 +34,18 @@
           button.className = 'w-full px-3 py-2 text-left text-sm text-ink hover:bg-page focus-visible:outline-2 focus-visible:outline-wine';
           button.textContent = place.label;
           button.addEventListener('click', () => {
+            // El servicio no informa si las coordenadas corresponden al número exterior.
+            if (/\d/.test(query)) {
+              selected = query;
+              input.value = query;
+              delete input.dataset.latitude;
+              delete input.dataset.longitude;
+              results.replaceChildren();
+              results.hidden = true;
+              status.textContent = 'El resultado no confirma el número. Conservamos tu dirección; agrega referencias para la entrega.';
+              input.focus();
+              return;
+            }
             selected = place.label;
             input.value = selected;
             input.dataset.latitude = String(place.latitude);

@@ -23,3 +23,7 @@ Campo de dirección con sugerencias del servicio de Traccar, Secret `TRACCAR_TOK
 ### Corrección del buscador y las imágenes guardadas
 
 `worker.js` usa redirección manual compatible con Cloudflare, sin seguir destinos ni reenviar credenciales. El carrito reutiliza la imagen vigente del producto presente en la página al restaurar pedidos guardados. Regresiones reproducidas antes del cambio; 12 pruebas unitarias, 6 de build y navegador en cuatro perfiles con datos sintéticos.
+
+### Referencias de entrega y números exteriores
+
+Campo opcional «Referencia o entrecalles» debajo de la dirección, incluido en el mensaje de WhatsApp. Si la consulta contiene números, seleccionar una sugerencia conserva el texto original, avisa que el número no está confirmado y no guarda coordenadas aproximadas como domicilio exacto. Prueba aislada reproduce «Janina 105» → «Andador Janina», conserva el domicilio y comprueba ambos campos en el mensaje sin abrir WhatsApp. No incluye tarifas automáticas de envío.
