@@ -449,9 +449,15 @@ const negocio = {
             <input
               type="text"
               name="direccion"
+              autocomplete="off"
+              maxlength="200"
+              aria-describedby="address-status"
+              aria-controls="address-results"
               class="min-w-0 w-full rounded-none border border-line bg-page px-3 py-2.5 text-sm text-ink outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
             />
           </label>
+          <p id="address-status" role="status" class="text-sm text-ink-secondary"></p>
+          <ul id="address-results" hidden aria-label="Direcciones encontradas" class="max-h-60 overflow-y-auto border border-line bg-white"></ul>
 
           <label
             class="flex min-w-0 flex-col gap-2 text-sm font-medium text-ink-secondary"
@@ -773,6 +779,7 @@ const negocio = {
     <!-- Scripts -->
     <script is:inline defer src="/scripts/config.js"></script>
     <script is:inline defer src="/scripts/tienda.js"></script>
+    <script is:inline defer src="/scripts/direcciones.js"></script>
     <script is:inline>
       // Marca visual de la categoría activa en los círculos de categorías.
       document.addEventListener("DOMContentLoaded", () => {

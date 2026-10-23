@@ -15,3 +15,7 @@ Rastro corto de cambios. Lo más reciente arriba.
 - **Solo Ofrendas**: landing con sus textos, catálogo por categoría y pedido por WhatsApp.
 - Layout unificado (`Layout.astro` + `ProductCard.astro`); estilo premium con esquinas rectas.
 - Imágenes locales y comprimidas (cabecera, logo).
+
+## 23 de octubre de 2026 — Buscador conectado mediante Worker
+
+Campo de dirección con sugerencias del servicio de Traccar, Secret `TRACCAR_TOKEN` privado y región `Nuevo León` en `worker.js`. Assets conservados mediante Wrangler. Pruebas aisladas, compilación y cuatro perfiles de navegador correctos; permisos productivos y publicación Cloudflare pendientes de verificación. [Configuración y límites](docs/BUSCADOR.md).

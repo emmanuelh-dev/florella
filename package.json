@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "vista-previa": "tailwindcss -i src/styles/global.css -o .preview-tailwind.css --minify && node scripts/crear-vista-previa.mjs",
-    "test": "node --test tests/source.test.mjs",
+    "test": "node --test tests/source.test.mjs tests/address-search.test.mjs",
     "test:build": "node --test tests/imagenes-build.test.mjs"
   },
   "dependencies": {
