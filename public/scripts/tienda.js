@@ -204,6 +204,8 @@
     }
     const badge = $('[data-cart-count]');
     if (badge) badge.textContent = String(count);
+    const continueOrder = $('#continue-order');
+    if (continueOrder) continueOrder.hidden = count === 0;
     const cartButton = $('[data-open-dialog="cart-dialog"]');
     if (cartButton) cartButton.setAttribute('aria-label', 'Abrir carrito, ' + count + (count === 1 ? ' producto' : ' productos'));
     const cartTotal = $('#cart-total');

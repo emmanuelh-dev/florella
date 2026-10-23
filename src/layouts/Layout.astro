@@ -741,6 +741,21 @@ const negocio = {
       </a>
     </dialog>
 
+    <div id="continue-order" hidden>
+      <div class="h-24" aria-hidden="true"></div>
+      <div class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <button
+          type="button"
+          data-open-dialog="cart-dialog"
+          class="flex w-full items-center justify-center gap-2 rounded-none bg-wine px-5 py-3 text-sm font-semibold text-white transition hover:bg-wine-hover"
+        >
+          <svg class="h-5 w-5" aria-hidden="true"><use href="#i-cart"></use></svg>
+          Continuar pedido
+          <svg class="h-5 w-5" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </button>
+      </div>
+    </div>
+
     <!-- Toast Notification -->
     <div
       id="toast"
