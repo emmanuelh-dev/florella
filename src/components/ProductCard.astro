@@ -84,7 +84,14 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
       </span>
     )}
     <h3 class="text-[13px] font-semibold text-ink sm:text-sm">{nombre}</h3>
-    <p class="mt-1 font-serif text-lg font-semibold text-wine">{precioTexto}</p>
+    <div class="mt-1 flex flex-wrap items-center justify-between gap-2">
+      <p class="font-serif text-lg font-semibold text-wine">{precioTexto}</p>
+      {Number(precio) > 2500 && (
+        <span class="ml-auto shrink-0 bg-yellow-100 px-2 py-1 text-[10px] font-semibold text-yellow-900">
+          Envío gratis
+        </span>
+      )}
+    </div>
     <button
       type="button"
       data-add={id}
