@@ -5,6 +5,9 @@ import ProductCard from '../../components/ProductCard.astro';
 import { getCategoriasSoloOfrendas } from '../../data/catalogo.js';
 
 const categorias = await getCategoriasSoloOfrendas();
+const destacados = [...new Map(categorias.flatMap((cat) => cat.productos)
+  .filter((prod) => prod.destacado)
+  .map((prod) => [prod.id, prod])).values()];
 const total = categorias.reduce((n, cat) => n + cat.productos.length, 0);
 
 const minPrecio = (cat) =>
@@ -171,7 +174,7 @@ const PERSONALIZADO =
 
   <!-- Secciones de productos -->
   {
-    categorias.map((cat, i) => (
+    [...(destacados.length ? [{ nombre: 'Destacados', slug: 'destacados', productos: destacados }] : []), ...categorias].map((cat, i) => (
       <section
         id={`seccion-${cat.slug}`}
         class="scroll-mt-20 border-b border-line bg-page py-10 sm:py-12"

@@ -79,6 +79,7 @@ function normalizar(data, config) {
             descripcion: prod.description || '',
             precio: Number(prod.price) || 0,
             disponible: prod.available !== false,
+            destacado: prod.featured === true,
             imagen: img ? img.url : null,
           };
         })

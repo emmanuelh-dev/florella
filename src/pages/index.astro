@@ -5,6 +5,9 @@ import ProductCard from "../components/ProductCard.astro";
 import { getCategoriasFlorella, formatearPrecio } from "../data/catalogo.js";
 
 const categorias = await getCategoriasFlorella();
+const destacados = [...new Map(categorias.flatMap((cat) => cat.productos)
+  .filter((prod) => prod.destacado)
+  .map((prod) => [prod.id, prod])).values()];
 const porNombre = new Map(categorias.map((c) => [c.nombre, c]));
 
 // --- Curaduría del inicio (cambia aquí el orden / lo que se muestra) ---
@@ -211,7 +214,7 @@ const TESTIMONIOS = [
 
   <!-- Secciones de productos -->
   {
-    secciones.map((cat, i) => (
+    [...(destacados.length ? [{ nombre: 'Destacados', slug: 'destacados', productos: destacados }] : []), ...secciones].map((cat, i) => (
       <section
         id={`seccion-${cat.slug}`}
         class="scroll-mt-20 border-b border-line bg-page py-10 sm:py-12"
