@@ -71,3 +71,55 @@ test('Todo es Tailwind puro, sin CSS personalizado', () => {
 test('El telefono usa el WhatsApp real de la floreria', () => {
   assert.match(load('public/scripts/config.js'), /whatsapp:\s*"528116176724"/);
 });
+
+test('checkout solo registra conversiones válidas, sin datos personales ni doble envío', () => {
+  const script = load('public/scripts/tienda.js');
+  const checkoutSource = script.slice(script.indexOf("  const orderForm = $('#order-form');"), script.indexOf('  if (whatsappReady) {'));
+  const handlers = [];
+  const conversions = [];
+  const opened = [];
+  const timers = [];
+  let valid = false;
+  const button = { disabled: false };
+  const form = {
+    dataset: {},
+    elements: { namedItem: () => null },
+    reportValidity: () => valid,
+    addEventListener: (type, handler) => handlers.push(handler),
+  };
+  const context = {
+    $: (selector) => selector === '#order-form' ? form : button,
+    orderReady: true,
+    orderWhatsapp: '528142547600',
+    cart: new Map([['product', { name: 'Arreglo de prueba', price: 1000, qty: 2 }]]),
+    money: (value) => '$' + value,
+    notify: () => {},
+    FormData: class { get(key) { return ({ telefono: '8112345678', direccion: 'Dirección privada', fallecido: 'Nombre privado' })[key]; } },
+    openWhatsAppTo: (number, message) => opened.push({ number, message }),
+    window: { gtag: (...args) => conversions.push(args) },
+    setTimeout: (callback) => timers.push(callback),
+  };
+  const run = new Script('{\n' + checkoutSource + '\n}');
+  run.runInNewContext(context);
+  run.runInNewContext(context);
+  assert.equal(conversions.length, 0);
+  const submit = () => handlers.forEach((handler) => handler({ preventDefault() {} }));
+  submit();
+  assert.equal(opened.length, 0);
+  assert.equal(conversions.length, 0);
+  valid = true;
+  context.orderReady = false;
+  submit();
+  assert.equal(conversions.length, 0);
+  context.orderReady = true;
+  submit();
+  submit();
+  assert.equal(opened.length, 1);
+  assert.equal(conversions.length, 1);
+  assert.equal(JSON.stringify(conversions[0]), JSON.stringify(['event', 'conversion', { send_to: 'AW-18532000410/g9ZiCOHou6cdEJrF34RF' }]));
+  assert.match(opened[0].message, /2 × Arreglo de prueba/);
+  assert.match(opened[0].message, /Teléfono de contacto: 8112345678/);
+  assert.equal(button.disabled, true);
+  timers.forEach((callback) => callback());
+  assert.equal(button.disabled, false);
+});

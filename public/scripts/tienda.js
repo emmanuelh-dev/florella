@@ -332,6 +332,7 @@
   }
   if (orderForm) orderForm.addEventListener('submit', (event) => {
     event.preventDefault();
+    if (orderForm.dataset.submitting === 'true' || !orderForm.reportValidity()) return;
     if (!orderReady) { notify('Falta configurar el número de WhatsApp del pedido.'); return; }
     const data = new FormData(orderForm);
     const val = (key) => String(data.get(key) || '').trim();
@@ -356,7 +357,22 @@
     ];
     campos.forEach(([label, value]) => { if (value) lines.push(label + ': ' + value); });
     lines.push('', 'Enviaré la foto de referencia por este chat.');
-    openWhatsAppTo(orderWhatsapp, lines.join('\n'));
+    orderForm.dataset.submitting = 'true';
+    const checkout = $('#checkout');
+    if (checkout) checkout.disabled = true;
+    try {
+      openWhatsAppTo(orderWhatsapp, lines.join('\n'));
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-18532000410/g9ZiCOHou6cdEJrF34RF',
+        });
+      }
+    } finally {
+      setTimeout(() => {
+        delete orderForm.dataset.submitting;
+        if (checkout) checkout.disabled = false;
+      }, 1500);
+    }
   });
 
   if (whatsappReady) {
