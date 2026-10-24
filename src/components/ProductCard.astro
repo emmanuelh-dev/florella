@@ -11,6 +11,7 @@ const {
   alt = nombre,
   occasions = [],
   disponible = true,
+  destacado = false,
   cta = 'Agregar',
 } = producto;
 const fotoCarrito = imagen ? await getImage({ src: imagen, inferSize: true, width: 144, format: 'webp' }) : null;
@@ -77,6 +78,11 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
     }
   </div>
   <div class="flex flex-1 flex-col p-4">
+    {destacado && (
+      <span class="mb-2 self-start bg-wine-soft px-2 py-1 text-[10px] font-semibold tracking-wide text-wine uppercase">
+        Destacado
+      </span>
+    )}
     <h3 class="text-[13px] font-semibold text-ink sm:text-sm">{nombre}</h3>
     <p class="mt-1 font-serif text-lg font-semibold text-wine">{precioTexto}</p>
     <button

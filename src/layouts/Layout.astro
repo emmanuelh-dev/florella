@@ -613,7 +613,7 @@ const negocio = {
     <dialog
       id="product-dialog"
       aria-labelledby="product-title"
-      class="relative m-auto max-h-[92dvh] w-[min(94vw,860px)] overflow-y-auto rounded-none bg-white p-0 text-ink shadow-2xl backdrop:bg-black/50"
+      class="fixed inset-0 m-auto max-h-[92dvh] w-[min(94vw,860px)] overflow-hidden rounded-none bg-white p-0 text-ink shadow-2xl backdrop:bg-black/50"
     >
       <button
         type="button"
@@ -625,7 +625,7 @@ const negocio = {
           ><use href="#i-close"></use></svg
         >
       </button>
-      <div class="grid sm:grid-cols-2">
+      <div class="grid max-h-[92dvh] overflow-y-auto sm:grid-cols-2">
         <div class="aspect-[3/4] bg-white">
           <img data-product-image alt="" class="h-full w-full object-cover" />
         </div>
