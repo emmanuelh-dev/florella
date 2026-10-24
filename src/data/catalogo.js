@@ -83,8 +83,7 @@ function normalizar(data, config) {
             imagen: img ? img.url : null,
           };
         })
-        // Precio: del mas barato al mas caro por defecto.
-        .sort((a, b) => a.precio - b.precio);
+        .sort((a, b) => Number(b.destacado) - Number(a.destacado) || a.precio - b.precio);
 
       return { id: cat.id, nombre, slug, productos };
     })

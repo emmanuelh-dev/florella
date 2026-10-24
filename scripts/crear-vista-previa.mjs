@@ -13,7 +13,7 @@ let html = (await load('src/pages/index.astro')).replace(/^---[\s\S]*?---\s*/, '
 const { SECCIONES } = await import('../src/data/articulos.js');
 const money = (v) => '$' + Number(v).toLocaleString('es-MX');
 const cardsHtml = SECCIONES.flatMap((sec) => sec.articulos.map((a) => [
-  '<article data-product data-id="' + a.id + '" data-name="' + a.nombre + '" data-price="' + a.precio + '" data-occasions="' + a.occasions.join('|') + '" class="group overflow-hidden rounded-xl border border-line bg-white transition hover:shadow-lg">',
+  '<article data-product data-id="' + a.id + '" data-name="' + a.nombre + '" data-price="' + a.precio + '" data-occasions="' + a.occasions.join('|') + '" class="group overflow-hidden rounded-xl bg-white transition hover:shadow-lg">',
   '<div class="relative aspect-[294/228] overflow-hidden bg-card">',
   '<img src="' + a.imagen + '" alt="' + a.alt + '" width="294" height="228" loading="eager" class="h-full w-full object-cover transition group-hover:scale-105" />',
   '<button type="button" data-favorite="' + a.id + '" aria-label="Guardar ' + a.nombre + ' en favoritos" aria-pressed="false" class="absolute top-2 right-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm transition hover:text-wine"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#i-heart"></use></svg></button>',

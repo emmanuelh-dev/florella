@@ -70,7 +70,7 @@ const tope = Math.max(paso, Math.ceil(precioMax / paso) * paso);
 
       <!-- Filtros y orden -->
       <div
-        class="mt-5 flex flex-col gap-4 border border-line bg-white p-4 sm:flex-row sm:items-end sm:p-5"
+        class="mt-5 flex flex-col gap-4 bg-white p-4 sm:flex-row sm:items-end sm:p-5"
       >
         <label
           class="flex flex-col gap-1.5 text-[11px] font-semibold tracking-[0.12em] text-ink-secondary uppercase"
@@ -78,7 +78,7 @@ const tope = Math.max(paso, Math.ceil(precioMax / paso) * paso);
           Ordenar por
           <select
             id="sort"
-            class="rounded-none border border-line bg-page px-3 py-2.5 text-sm font-normal tracking-normal text-ink normal-case outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
+            class="rounded-none bg-page px-3 py-2.5 text-sm font-normal tracking-normal text-ink normal-case outline-none transition focus:border-wine focus:ring-1 focus:ring-wine"
           >
             <option value="price-asc" selected>Precio: más barato al más caro</option>
             <option value="price-desc">Precio: más caro al más barato</option>
@@ -107,7 +107,7 @@ const tope = Math.max(paso, Math.ceil(precioMax / paso) * paso);
         <button
           type="button"
           id="clear-filters"
-          class="shrink-0 rounded-none border border-line px-5 py-2.5 text-[12px] font-semibold tracking-[0.1em] text-ink uppercase transition hover:border-wine hover:text-wine"
+          class="shrink-0 rounded-none px-5 py-2.5 text-[12px] font-semibold tracking-[0.1em] text-ink uppercase transition hover:border-wine hover:text-wine"
         >
           Limpiar
         </button>
@@ -143,7 +143,7 @@ const tope = Math.max(paso, Math.ceil(precioMax / paso) * paso);
       <div
         id="empty-products"
         hidden
-        class="mt-8 border border-line bg-white p-10 text-center"
+        class="mt-8 bg-white p-10 text-center"
       >
         <p class="text-sm text-muted">
           No hay arreglos que coincidan con el filtro.
