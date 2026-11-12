@@ -17,6 +17,22 @@ const servicios = [
   title="Decoración floral para eventos en Monterrey · Florella"
   description="Decoración para bodas, XV años y eventos institucionales en Monterrey. Cotiza centros de mesa, aros, ramos y montajes para escenarios."
 >
+  <section aria-labelledby="servicios-eventos" class="border-b border-line bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+      <h2 id="servicios-eventos" class="font-serif text-3xl font-semibold sm:text-4xl">
+        ¿Qué podemos montar para tu evento?
+      </h2>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {servicios.map(({ titulo, descripcion }) => (
+          <li class="border border-line bg-page p-5">
+            <h3 class="font-serif text-xl font-semibold">{titulo}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-secondary">{descripcion}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
     <div class="mb-7 flex flex-col items-start gap-5 sm:mb-9 lg:flex-row lg:items-end lg:justify-between">
       <div>
@@ -66,21 +82,5 @@ const servicios = [
         Montajes en la Preparatoria 9 de la UANL. Las flores blancas y amarillas enmarcan el escenario en las primeras dos fotos. Para el Concurso Interpreparatorias de Física, el follaje verde recorre el frente del escenario.
       </figcaption>
     </figure>
-  </section>
-
-  <section aria-labelledby="servicios-eventos" class="border-t border-line bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-      <h2 id="servicios-eventos" class="font-serif text-3xl font-semibold sm:text-4xl">
-        ¿Qué podemos montar para tu evento?
-      </h2>
-      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {servicios.map(({ titulo, descripcion }) => (
-          <li class="border border-line bg-page p-5">
-            <h3 class="font-serif text-xl font-semibold">{titulo}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-ink-secondary">{descripcion}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
   </section>
 </Layout>
