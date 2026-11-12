@@ -11,6 +11,38 @@ const servicios = [
   { titulo: "Montajes para escenarios", descripcion: "Flores y follaje para el frente del escenario, el podio y la mesa de ceremonia." },
   { titulo: "Ramos para XV años y bodas", descripcion: "Ramos para la quinceañera o la novia, con opciones de ramo individual o trío." },
 ];
+
+const montajesInstitucionales = [
+  {
+    titulo: "FACPYA y UANL",
+    fotos: [
+      { archivo: "facpya-azul", ancho: 1080, alto: 1370, alt: "Flores blancas y azules en el borde del escenario de FACPYA" },
+      { archivo: "facpya-blanco", ancho: 1080, alto: 611, alt: "Flores blancas al pie del escenario y sobre la mesa principal de FACPYA" },
+      { archivo: "uanl-multicolor", ancho: 1080, alto: 597, alt: "Arreglo multicolor al frente del escenario de la UANL" },
+    ],
+  },
+  {
+    titulo: "Montajes en auditorios",
+    fotos: [
+      { archivo: "cnci-flores-azules", ancho: 1600, alto: 1200, alt: "Flores blancas y azules frente al escenario y debajo de las letras de CNCI" },
+      { archivo: "cnci-letras", ancho: 1080, alto: 493, alt: "Arreglos en pedestales y al pie del escenario con letras iluminadas de CNCI" },
+      { archivo: "auditorio-pedestales", ancho: 1080, alto: 539, alt: "Arreglos altos a los lados de la pantalla y flores en el borde de un escenario curvo" },
+    ],
+  },
+  {
+    titulo: "Anglia Institute",
+    fotos: [
+      { archivo: "anglia-vista-general", ancho: 1080, alto: 797, alt: "Vista del escenario de Anglia Institute con flores frente a la mesa principal" },
+      { archivo: "anglia-podio", ancho: 1080, alto: 812, alt: "Arreglos blancos junto al podio y al frente del escenario de Anglia Institute" },
+    ],
+  },
+  {
+    titulo: "Tecnológico de Monterrey",
+    fotos: [
+      { archivo: "tec-escenario", ancho: 1078, alto: 762, alt: "Flores blancas y follaje frente a la mesa principal y el podio del Tecnológico de Monterrey" },
+    ],
+  },
+];
 ---
 
 <Layout
@@ -51,36 +83,63 @@ const servicios = [
       >Cotizar por WhatsApp</a>
     </div>
 
-    <figure>
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[2fr_1fr] lg:grid-rows-2">
-        <img
-          src="/imagenes/evento-arreglo-escenario.webp"
-          alt="Arreglo de flores blancas y amarillas a lo largo del escenario de la Preparatoria 9 de la UANL"
-          width="1600"
-          height="1200"
-          fetchpriority="high"
-          class="aspect-[4/3] w-full object-cover sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:h-full"
-        />
-        <img
-          src="/imagenes/evento-vista-frontal.webp"
-          alt="Vista frontal del escenario con una hilera de flores en el borde"
-          width="1600"
-          height="1200"
-          loading="lazy"
-          class="aspect-[4/3] w-full object-cover"
-        />
-        <img
-          src="/imagenes/evento-montaje-follaje.webp"
-          alt="Montaje de follaje verde frente al escenario del Concurso Interpreparatorias de Física"
-          width="1599"
-          height="899"
-          loading="lazy"
-          class="aspect-[4/3] w-full object-cover"
-        />
-      </div>
-      <figcaption class="mt-3 max-w-3xl text-sm leading-relaxed text-ink-secondary">
-        Montajes en la Preparatoria 9 de la UANL. Las flores blancas y amarillas enmarcan el escenario en las primeras dos fotos. Para el Concurso Interpreparatorias de Física, el follaje verde recorre el frente del escenario.
-      </figcaption>
-    </figure>
+    <section aria-labelledby="eventos-institucionales">
+      <h2 id="eventos-institucionales" class="font-serif text-2xl font-semibold sm:text-3xl">
+        Eventos institucionales
+      </h2>
+      <p class="mt-2 mb-6 max-w-2xl text-sm leading-relaxed text-ink-secondary sm:text-base">
+        Montajes florales para graduaciones, inauguraciones de empresas, torneos deportivos y eventos de inicio o cierre de ciclos educativos.
+      </p>
+
+      <figure>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[2fr_1fr] lg:grid-rows-2">
+          <img
+            src="/imagenes/evento-arreglo-escenario.webp"
+            alt="Arreglo de flores blancas y amarillas a lo largo del escenario de la Preparatoria 9 de la UANL"
+            width="1600"
+            height="1200"
+            fetchpriority="high"
+            class="aspect-[4/3] w-full object-cover sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:h-full"
+          />
+          <img
+            src="/imagenes/evento-vista-frontal.webp"
+            alt="Vista frontal del escenario con una hilera de flores en el borde"
+            width="1600"
+            height="1200"
+            loading="lazy"
+            class="aspect-[4/3] w-full object-cover"
+          />
+          <img
+            src="/imagenes/evento-montaje-follaje.webp"
+            alt="Montaje de follaje verde frente al escenario del Concurso Interpreparatorias de Física"
+            width="1599"
+            height="899"
+            loading="lazy"
+            class="aspect-[4/3] w-full object-cover"
+          />
+        </div>
+        <figcaption class="mt-3 max-w-3xl text-sm leading-relaxed text-ink-secondary">
+          Montajes en la Preparatoria 9 de la UANL. Las flores blancas y amarillas enmarcan el escenario en las primeras dos fotos. Para el Concurso Interpreparatorias de Física, el follaje verde recorre el frente del escenario.
+        </figcaption>
+      </figure>
+
+      {montajesInstitucionales.map(({ titulo, fotos }) => (
+        <figure class="mt-8">
+          <figcaption class="mb-3 font-serif text-xl font-semibold">{titulo}</figcaption>
+          <div class:list={["grid gap-3 sm:grid-cols-2", fotos.length > 2 && "lg:grid-cols-3"]}>
+            {fotos.map(({ archivo, ancho, alto, alt }) => (
+              <img
+                src={`/imagenes/evento-${archivo}.webp`}
+                width={ancho}
+                height={alto}
+                alt={alt}
+                loading="lazy"
+                class="aspect-[4/3] w-full object-cover object-bottom"
+              />
+            ))}
+          </div>
+        </figure>
+      ))}
+    </section>
   </section>
 </Layout>
