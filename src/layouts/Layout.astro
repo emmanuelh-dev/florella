@@ -9,7 +9,18 @@ const {
 } = Astro.props;
 
 const ruta = Astro.url.pathname;
+const rutaSeccion = ruta.replace(/\/$/, "") || "/";
+const secciones = [
+  { href: "/", texto: "Toda ocasión" },
+  { href: "/solo-ofrendas", texto: "Funerales" },
+  { href: "/eventos", texto: "Eventos" },
+];
 const enSoloOfrendas = ruta.startsWith("/solo-ofrendas");
+const avisosServicio = [
+  "Servicio a Monterrey y área metropolitana",
+  enSoloOfrendas ? "Envío exprés: 1 hora · Estándar: 3 horas" : "Envío express (2 hrs)",
+  enSoloOfrendas ? "81-4254-7600" : "Envía desde cualquier parte",
+];
 
 // Cada catálogo tiene su propia navegación.
 const categoriasSolo = enSoloOfrendas ? await getCategoriasSoloOfrendas() : [];
@@ -23,10 +34,7 @@ const navegacion = enSoloOfrendas
         activo: ruta === `/solo-ofrendas/${cat.slug}`,
       })),
     ]
-  : [
-      { href: "/", texto: "Inicio", activo: ruta === "/" },
-      { href: "/solo-ofrendas", texto: "Solo Ofrendas", activo: false },
-    ];
+  : [];
 
 // SEO: URLs absolutas para canonical y Open Graph (Astro.site sale de astro.config).
 const base = Astro.site ?? new URL(Astro.url.origin);
@@ -266,6 +274,48 @@ const negocio = {
       </div>
     </header>
 
+    {(rutaSeccion === "/" || rutaSeccion === "/solo-ofrendas") && (
+      <div class="group overflow-hidden border-b border-line bg-ink text-white">
+        <div class="text-center text-[11px] font-semibold tracking-[0.14em] uppercase motion-safe:flex motion-safe:w-max motion-safe:animate-franja motion-safe:group-hover:[animation-play-state:paused]">
+          {[false, true].map((duplicado) => (
+            <div
+              aria-hidden={duplicado ? "true" : undefined}
+              class:list={[
+                "px-6 py-3 motion-safe:flex motion-safe:min-w-screen motion-safe:shrink-0 motion-safe:justify-around motion-safe:gap-12 motion-safe:whitespace-nowrap",
+                duplicado ? "motion-reduce:hidden" : "motion-reduce:flex motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-8 motion-reduce:gap-y-1",
+              ]}
+            >
+              {avisosServicio.map((aviso) => <span>{aviso}</span>)}
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <nav aria-labelledby="secciones-titulo" class="border-b border-line bg-wine-soft">
+      <div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <p id="secciones-titulo" class="font-serif text-xl font-semibold text-ink sm:text-2xl">¿Qué buscas?</p>
+        <div class="grid grid-cols-3 gap-2">
+          {secciones.map(({ href, texto }) => {
+            const esPaginaActual = rutaSeccion === href;
+            const activa = esPaginaActual || (href === "/solo-ofrendas" && enSoloOfrendas);
+            return (
+              <a
+                href={href}
+                aria-current={esPaginaActual ? "page" : activa ? "location" : undefined}
+                class:list={[
+                  "flex min-h-11 items-center justify-center border px-2 text-center text-sm font-semibold transition sm:px-5",
+                  activa
+                    ? "border-wine bg-wine text-white hover:bg-wine-hover"
+                    : "border-line bg-white text-ink hover:border-wine hover:text-wine",
+                ]}
+              >{texto}</a>
+            );
+          })}
+        </div>
+      </div>
+    </nav>
+
     <main id="contenido">
       <slot />
     </main>
@@ -295,6 +345,7 @@ const negocio = {
             <a href="/solo-ofrendas" class="transition hover:text-wine"
               >Solo Ofrendas</a
             >
+            <a href="/eventos" class="transition hover:text-wine">Eventos</a>
             <button
               type="button"
               data-open-dialog="contact-dialog"

@@ -1,0 +1,58 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const cotizacion =
+  "https://wa.me/528142547600?text=" +
+  encodeURIComponent("Hola, me gustaría cotizar la decoración floral para un evento.");
+---
+
+<Layout
+  title="Decoración floral para eventos en Monterrey · Florella"
+  description="Conoce los montajes florales de Florella para eventos en Monterrey y cotiza la decoración por WhatsApp."
+>
+  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+    <div class="mb-7 flex flex-col items-start gap-5 sm:mb-9 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <h1 class="font-serif text-3xl leading-tight font-semibold tracking-tight sm:text-5xl">
+          Decoración floral para eventos
+        </h1>
+        <p class="mt-3 max-w-xl text-sm leading-relaxed text-ink-secondary sm:text-base">
+          Arreglos florales y montajes con follaje para escenarios y espacios de eventos en Monterrey.
+        </p>
+      </div>
+      <a
+        href={cotizacion}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-12 shrink-0 items-center justify-center bg-wine px-5 text-sm font-semibold text-white transition hover:bg-wine-hover"
+      >Cotizar por WhatsApp</a>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[2fr_1fr] lg:grid-rows-2">
+      <img
+        src="/imagenes/evento-arreglo-escenario.webp"
+        alt="Arreglo de flores blancas y amarillas a lo largo del escenario de la Preparatoria 9 de la UANL"
+        width="1600"
+        height="1200"
+        fetchpriority="high"
+        class="aspect-[4/3] w-full object-cover sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:h-full"
+      />
+      <img
+        src="/imagenes/evento-vista-frontal.webp"
+        alt="Vista frontal del escenario con una hilera de flores en el borde"
+        width="1600"
+        height="1200"
+        loading="lazy"
+        class="aspect-[4/3] w-full object-cover"
+      />
+      <img
+        src="/imagenes/evento-montaje-follaje.webp"
+        alt="Montaje de follaje verde frente al escenario del Concurso Interpreparatorias de Física"
+        width="1599"
+        height="899"
+        loading="lazy"
+        class="aspect-[4/3] w-full object-cover"
+      />
+    </div>
+  </section>
+</Layout>

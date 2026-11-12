@@ -1,5 +1,3 @@
-// Sitemap XML generado en build. Incluye el inicio, Solo Ofrendas y cada
-// categoría del catálogo funerario.
 import { getCategoriasSoloOfrendas } from '../data/catalogo.js';
 
 export const prerender = true;
@@ -10,6 +8,7 @@ export async function GET({ site }) {
   const rutas = [
     '/',
     '/solo-ofrendas',
+    '/eventos',
     ...categorias.map((cat) => `/solo-ofrendas/${cat.slug}`),
   ];
   const urls = rutas
