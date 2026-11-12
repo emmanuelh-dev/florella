@@ -1,25 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ProductCard from "../components/ProductCard.astro";
-import { getCategoriasFlorella } from "../data/catalogo.js";
 
-const categorias = await getCategoriasFlorella();
-const ramos = categorias
-  .filter(({ slug }) => slug === "ramos-de-xv-anos-y-boda" || slug === "trio-de-ramos-xv-bodas")
-  .flatMap(({ nombre, productos }) =>
-    productos.map((producto) => ({ ...producto, occasions: [nombre] }))
-  );
 const cotizacion =
   "https://wa.me/528142547600?text=" +
   encodeURIComponent("Hola, me gustaría cotizar la decoración floral para un evento.");
-const cotizacionRamos =
-  "https://wa.me/528142547600?text=" +
-  encodeURIComponent("Hola, me gustaría cotizar un ramo para XV años o boda.");
+
+const servicios = [
+  { titulo: "Centros de mesa", descripcion: "Arreglos para las mesas de invitados y la mesa principal." },
+  { titulo: "Aros decorativos", descripcion: "Aros para enmarcar la entrada, la mesa principal o el espacio de fotos." },
+  { titulo: "Montajes para escenarios", descripcion: "Flores y follaje para el frente del escenario, el podio y la mesa de ceremonia." },
+  { titulo: "Ramos para XV años y bodas", descripcion: "Ramos para la quinceañera o la novia, con opciones de ramo individual o trío." },
+];
 ---
 
 <Layout
   title="Decoración floral para eventos en Monterrey · Florella"
-  description="Montajes florales para eventos escolares e institucionales y ramos para XV años y bodas en Monterrey."
+  description="Decoración para bodas, XV años y eventos institucionales en Monterrey. Cotiza centros de mesa, aros, ramos y montajes para escenarios."
 >
   <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
     <div class="mb-7 flex flex-col items-start gap-5 sm:mb-9 lg:flex-row lg:items-end lg:justify-between">
@@ -28,7 +24,7 @@ const cotizacionRamos =
           Decoración floral para eventos
         </h1>
         <p class="mt-3 max-w-xl text-sm leading-relaxed text-ink-secondary sm:text-base">
-          En una ceremonia escolar, las flores pueden enmarcar el escenario donde se reúne la comunidad. En la Preparatoria 9 de la UANL, un montaje con flores blancas y amarillas recorrió el borde del escenario. Para el Concurso Interpreparatorias de Física, el follaje verde acompañó el frente de la mesa y el podio.
+          Decoramos bodas, XV años, ceremonias escolares y eventos institucionales en Monterrey. Podemos vestir las mesas y la entrada de una celebración o preparar el escenario y el podio para una ceremonia.
         </p>
       </div>
       <a
@@ -39,54 +35,52 @@ const cotizacionRamos =
       >Cotizar por WhatsApp</a>
     </div>
 
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[2fr_1fr] lg:grid-rows-2">
-      <img
-        src="/imagenes/evento-arreglo-escenario.webp"
-        alt="Arreglo de flores blancas y amarillas a lo largo del escenario de la Preparatoria 9 de la UANL"
-        width="1600"
-        height="1200"
-        fetchpriority="high"
-        class="aspect-[4/3] w-full object-cover sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:h-full"
-      />
-      <img
-        src="/imagenes/evento-vista-frontal.webp"
-        alt="Vista frontal del escenario con una hilera de flores en el borde"
-        width="1600"
-        height="1200"
-        loading="lazy"
-        class="aspect-[4/3] w-full object-cover"
-      />
-      <img
-        src="/imagenes/evento-montaje-follaje.webp"
-        alt="Montaje de follaje verde frente al escenario del Concurso Interpreparatorias de Física"
-        width="1599"
-        height="899"
-        loading="lazy"
-        class="aspect-[4/3] w-full object-cover"
-      />
-    </div>
+    <figure>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[2fr_1fr] lg:grid-rows-2">
+        <img
+          src="/imagenes/evento-arreglo-escenario.webp"
+          alt="Arreglo de flores blancas y amarillas a lo largo del escenario de la Preparatoria 9 de la UANL"
+          width="1600"
+          height="1200"
+          fetchpriority="high"
+          class="aspect-[4/3] w-full object-cover sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:h-full"
+        />
+        <img
+          src="/imagenes/evento-vista-frontal.webp"
+          alt="Vista frontal del escenario con una hilera de flores en el borde"
+          width="1600"
+          height="1200"
+          loading="lazy"
+          class="aspect-[4/3] w-full object-cover"
+        />
+        <img
+          src="/imagenes/evento-montaje-follaje.webp"
+          alt="Montaje de follaje verde frente al escenario del Concurso Interpreparatorias de Física"
+          width="1599"
+          height="899"
+          loading="lazy"
+          class="aspect-[4/3] w-full object-cover"
+        />
+      </div>
+      <figcaption class="mt-3 max-w-3xl text-sm leading-relaxed text-ink-secondary">
+        Montajes en la Preparatoria 9 de la UANL. Las flores blancas y amarillas enmarcan el escenario en las primeras dos fotos. Para el Concurso Interpreparatorias de Física, el follaje verde recorre el frente del escenario.
+      </figcaption>
+    </figure>
   </section>
 
-  <section aria-labelledby="ramos-eventos" class="border-t border-line bg-white">
+  <section aria-labelledby="servicios-eventos" class="border-t border-line bg-white">
     <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-      <h2 id="ramos-eventos" class="font-serif text-3xl font-semibold sm:text-4xl">
-        Ramos para XV años y bodas
+      <h2 id="servicios-eventos" class="font-serif text-3xl font-semibold sm:text-4xl">
+        ¿Qué podemos montar para tu evento?
       </h2>
-      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-ink-secondary sm:text-base">
-        En los XV años, el ramo acompaña a la quinceañera y puede combinar con su vestido. En una boda, el ramo de novia puede coordinarse con los de ofrenda y de aventar. Tenemos opciones de ramo individual y de trío.
-      </p>
-      <a
-        href={cotizacionRamos}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-4 inline-flex min-h-11 items-center font-semibold text-wine underline underline-offset-4 hover:text-wine-hover"
-      >Cotizar un ramo por WhatsApp</a>
-
-      {ramos.length > 0 && (
-        <div class="mt-5 grid max-w-xl grid-cols-2 gap-4 sm:gap-5">
-          {ramos.map((producto) => <ProductCard producto={producto} />)}
-        </div>
-      )}
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {servicios.map(({ titulo, descripcion }) => (
+          <li class="border border-line bg-page p-5">
+            <h3 class="font-serif text-xl font-semibold">{titulo}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-secondary">{descripcion}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 </Layout>
