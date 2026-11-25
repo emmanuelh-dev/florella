@@ -170,7 +170,7 @@
   // Un teléfono vacío o inválido mantiene desactivado el contacto comercial.
   const whatsapp = String(window.FLORELLA_CONFIG?.whatsapp || '').replace(/\D/g, '');
   const whatsappReady = /^[1-9]\d{9,14}$/.test(whatsapp);
-  const orderWhatsapp = String(window.FLORELLA_CONFIG?.orderWhatsapp || whatsapp || '').replace(/\D/g, '');
+  const orderWhatsapp = String(document.body.dataset.orderWhatsapp || window.FLORELLA_CONFIG?.orderWhatsapp || whatsapp || '').replace(/\D/g, '');
   const orderReady = /^[1-9]\d{9,14}$/.test(orderWhatsapp);
 
   function renderCart() {
@@ -265,6 +265,9 @@
     add.dataset.name = nombre;
     add.dataset.price = String(precio);
     add.dataset.image = imagen;
+    const pedidoWhatsapp = productDialog.querySelector('[data-dialog-whatsapp]');
+    const enlaceWhatsapp = card.querySelector('[data-product-whatsapp]');
+    if (pedidoWhatsapp && enlaceWhatsapp) pedidoWhatsapp.href = enlaceWhatsapp.href;
     if (!productDialog.open) productDialog.showModal();
     document.body.classList.add('overflow-hidden');
   }

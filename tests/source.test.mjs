@@ -69,7 +69,7 @@ test('Todo es Tailwind puro, sin CSS personalizado', () => {
 });
 
 test('El telefono usa el WhatsApp real de la floreria', () => {
-  assert.match(load('public/scripts/config.js'), /whatsapp:\s*"528116176724"/);
+  assert.match(load('public/scripts/config.js'), /whatsapp:\s*"528113820017"/);
 });
 
 test('checkout solo registra conversiones válidas, sin datos personales ni doble envío', () => {

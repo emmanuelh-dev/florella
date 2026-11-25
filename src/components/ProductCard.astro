@@ -1,7 +1,7 @@
 ---
 import { Image, getImage } from 'astro:assets';
 // Tarjeta de producto compartida por toda la tienda (inicio y Solo Ofrendas).
-const { producto } = Astro.props;
+const { producto, whatsappPedido } = Astro.props;
 const {
   id,
   nombre,
@@ -16,6 +16,7 @@ const {
 } = producto;
 const fotoCarrito = imagen ? await getImage({ src: imagen, inferSize: true, width: 144, format: 'webp' }) : null;
 const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
+const enlacePedido = whatsappPedido && `https://wa.me/${whatsappPedido}?text=${encodeURIComponent(`Hola, quiero pedir ${nombre} (${precioTexto}) de Solo Ofrendas.`)}`;
 ---
 
 <article
@@ -101,7 +102,13 @@ const precioTexto = '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
       class="mt-3 inline-flex items-center justify-center gap-1.5 rounded-none bg-wine-soft px-4 py-2.5 text-[12px] font-semibold tracking-[0.08em] text-wine uppercase transition hover:bg-wine hover:text-white"
     >
       <svg class="h-4 w-4" aria-hidden="true"><use href="#i-bag"></use></svg>
-      {cta}
+      {whatsappPedido ? 'Agregar al carrito' : cta}
     </button>
+    {enlacePedido && (
+      <a href={enlacePedido} data-product-whatsapp target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center justify-center gap-1.5 bg-wine px-3 py-2.5 text-center text-[12px] font-semibold text-white transition hover:bg-wine-hover">
+        <svg class="h-4 w-4 shrink-0" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Pedir por WhatsApp
+      </a>
+    )}
   </div>
 </article>

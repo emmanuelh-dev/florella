@@ -48,7 +48,7 @@ const negocio = {
   name: "Florella Eventos y detalles",
   url: base.href,
   image: ogImagen,
-  telephone: "+528142547600",
+  telephone: enSoloOfrendas ? "+528142547600" : "+528113820017",
   areaServed: "Monterrey y área metropolitana",
   priceRange: "$$",
   address: { "@type": "PostalAddress", addressLocality: "Monterrey", addressRegion: "NL", addressCountry: "MX" },
@@ -103,7 +103,7 @@ const negocio = {
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body data-order-whatsapp={enSoloOfrendas ? "528142547600" : "528113820017"}>
     <a
       href="#contenido"
       class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:rounded-none focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-wine"
@@ -359,8 +359,7 @@ const negocio = {
         >
           <p>© 2026 Florella. Todos los derechos reservados.</p>
           <span
-            >Entrega express en Monterrey y zona conurbada · WhatsApp 81 1617
-            6724.</span
+            >Entrega express en Monterrey y zona conurbada · WhatsApp {enSoloOfrendas ? "81 4254 7600" : "81 1382 0017"}.</span
           >
         </div>
       </div>
@@ -711,6 +710,12 @@ const negocio = {
             >
             Agregar al carrito
           </button>
+          {enSoloOfrendas && (
+            <a data-dialog-whatsapp target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-wine-soft px-6 py-3 text-sm font-semibold text-wine transition hover:bg-wine hover:text-white">
+              <svg class="h-4 w-4" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+              Pedir por WhatsApp
+            </a>
+          )}
           <p class="text-[11px] text-muted">
             Entrega en Monterrey y área metropolitana. Pide por WhatsApp.
           </p>
@@ -763,7 +768,7 @@ const negocio = {
       </nav>
       <div class="px-4 pb-6">
         <a
-          href="https://wa.me/528142547600"
+          href={enSoloOfrendas ? "https://wa.me/528142547600" : "https://wa.me/528113820017"}
           target="_blank"
           rel="noopener"
           class="inline-flex w-full items-center justify-center gap-2 rounded-none bg-wine px-5 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition hover:bg-wine-hover"
@@ -805,7 +810,7 @@ const negocio = {
         personalizar la cinta con el mensaje de condolencias.
       </p>
       <a
-        href="https://api.whatsapp.com/send?phone=528116176724&text=Hola,%20necesito%20informaci%C3%B3n%20sobre%20un%20arreglo%20funerario"
+        href={enSoloOfrendas ? "https://wa.me/528142547600?text=Hola,%20necesito%20informaci%C3%B3n%20sobre%20un%20arreglo%20funerario" : "https://wa.me/528113820017"}
         target="_blank"
         rel="noopener"
         class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-none bg-wine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-wine-hover"
