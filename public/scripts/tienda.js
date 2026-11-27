@@ -26,6 +26,22 @@
     };
   });
   const productById = new Map(products.map((product) => [product.id, product]));
+  const enSoloOfrendas = (location.pathname === '/solo-ofrendas' || location.pathname.startsWith('/solo-ofrendas/'));
+  if (enSoloOfrendas && 'IntersectionObserver' in window) {
+    const viewed = new Set();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.dataset.id;
+        if (!viewed.has(id)) {
+          viewed.add(id);
+          window.florellaTrack?.('producto_visto', { producto: entry.target.dataset.name, id });
+        }
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+    cards.forEach((card) => observer.observe(card));
+  }
   // Filtro de precio: el tope lo define la página (atributo max del slider).
   const maxPriceInputEl = $('#max-price');
   const precioMax = maxPriceInputEl ? Number(maxPriceInputEl.max) || 2500 : 2500;
@@ -233,6 +249,7 @@
     };
     base.qty = qty + 1;
     cart.set(id, base);
+    if (enSoloOfrendas) window.florellaTrack?.('agregar_carrito', { producto: base.name, id, precio: base.price });
     renderCart();
     notify(base.name + ' se agregó a tu carrito.');
   }
@@ -251,6 +268,7 @@
     const img = card.querySelector('img');
     const imagen = img ? img.getAttribute('src') || '' : '';
     const nombre = card.dataset.name || 'Arreglo';
+    if (enSoloOfrendas) window.florellaTrack?.('producto_detalle', { producto: nombre, id: card.dataset.id });
     const precio = Number(card.dataset.price) || 0;
     const descripcion = (card.dataset.description || '').trim();
     productDialog.querySelector('[data-product-image]').src = imagen;
@@ -306,6 +324,7 @@
   $$('[data-open-dialog]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.getElementById(button.dataset.openDialog);
     if (!dialog) return;
+    if (enSoloOfrendas && button.dataset.openDialog === 'cart-dialog') window.florellaTrack?.('abrir_carrito', { productos: cart.size });
     if (!dialog.open) dialog.showModal();
     document.body.classList.add('overflow-hidden');
   }));
@@ -322,8 +341,8 @@
 
   function openWhatsAppTo(number, message, tipo = 'contacto') {
     if (!/^[1-9]\d{9,14}$/.test(number)) return;
-    window.umami?.track('whatsapp_click', { negocio: number === '528142547600' ? 'solo_ofrendas' : 'florella', tipo });
-    window.open('https://wa.me/' + number + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+    window.florellaTrack?.('whatsapp_click', { negocio: number === '528142547600' ? 'solo_ofrendas' : 'florella', tipo });
+    window.open('https://wa.me/' + number + '?text=' + encodeURIComponent(window.florellaMessage?.(message) || message), '_blank', 'noopener,noreferrer');
   }
   function openWhatsApp(message) { openWhatsAppTo(whatsapp, message); }
 

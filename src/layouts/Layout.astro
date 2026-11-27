@@ -61,12 +61,44 @@ const negocio = {
     <meta charset="UTF-8" />
     <script is:inline defer src="https://umami.bysmax.com/script.js" data-website-id="79c96a28-3bc0-4ce8-81d6-9d8beb4a48f9"></script>
     <script is:inline>
+      const params = new URLSearchParams(location.search);
+      const clean = value => (value || '').replace(/[^\p{L}\p{N} _.-]/gu, '').slice(0, 80);
+      const source = clean(params.get('utm_source'));
+      const medium = clean(params.get('utm_medium'));
+      const campaign = clean(params.get('utm_campaign'));
+      const googleAds = ['gclid', 'gbraid', 'wbraid'].some(key => params.has(key));
+      let attribution = {};
+      try {
+        attribution = JSON.parse(sessionStorage.getItem('solo-ofrendas-attribution') || '{}');
+        if (source || medium || campaign || googleAds) {
+          attribution = { source, medium, campaign, google_ads: googleAds ? 'si' : '' };
+          sessionStorage.setItem('solo-ofrendas-attribution', JSON.stringify(attribution));
+        }
+      } catch {}
+      window.florellaTrack = (name, data = {}) => window.umami?.track(name, { ...attribution, ...data });
+      window.florellaMessage = message => {
+        if (!(location.pathname === '/solo-ofrendas' || location.pathname.startsWith('/solo-ofrendas/')) || !Object.values(attribution).some(Boolean)) return message;
+        const details = [attribution.source && `fuente: ${attribution.source}`, attribution.medium && `medio: ${attribution.medium}`, attribution.campaign && `campaña: ${attribution.campaign}`, attribution.google_ads && 'Google Ads'].filter(Boolean);
+        return `${message}\n\nOrigen: ${details.join(' · ')}`;
+      };
       document.addEventListener('click', (event) => {
         const link = event.target.closest?.('a[href*="wa.me/"]');
         if (!link) return;
         const negocio = link.href.includes('528142547600') ? 'solo_ofrendas' : 'florella';
         const tipo = link.matches('[data-product-whatsapp], [data-dialog-whatsapp]') ? 'producto' : 'contacto';
-        window.umami?.track('whatsapp_click', { negocio, tipo });
+        if (negocio === 'solo_ofrendas') {
+          const url = new URL(link.href);
+          const message = link.href === link.dataset.annotatedHref
+            ? link.dataset.originalMessage
+            : url.searchParams.get('text') || 'Hola, me interesa hacer un pedido de Solo Ofrendas.';
+          link.dataset.originalMessage = message;
+          url.searchParams.set('text', window.florellaMessage(message));
+          link.href = url.toString();
+          link.dataset.annotatedHref = link.href;
+        }
+        const card = link.closest('[data-product]');
+        const product = card?.dataset.name || (tipo === 'producto' ? document.querySelector('#product-dialog [data-product-name]')?.textContent : '');
+        window.florellaTrack('whatsapp_click', { negocio, tipo, ...(product ? { producto: product } : {}) });
       });
     </script>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18532000410"></script>
