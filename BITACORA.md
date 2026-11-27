@@ -2,6 +2,10 @@
 
 Rastro corto de cambios. Lo más reciente arriba.
 
+## 26 de noviembre de 2026 — Foto de la Corona Virgen de Gpe
+
+La foto nueva está vinculada a la ficha en Mímir. La compilación la convierte en WebP y la usa en el catálogo general y en Coronas; la ficha se verificó en navegador en escritorio y móvil. Se actualizó el respaldo de Solo Ofrendas. Publicación del sitio: verificar que el dominio sirva las imágenes nuevas después del despliegue.
+
 ## 2026-10
 - **Ficha del arreglo**: al tocar la foto se abre un modal con foto, nombre, precio y descripción (si el arreglo tiene); si no tiene, solo la foto. Navegación separada por catálogo (Florella vs Solo Ofrendas).
 - **Catálogo**: precios de **mayor a menor** por defecto en todas las vistas; slugs con override + fallback; categorías renombradas en Mimir (`Coronas`, `Ofrenda Floral`); test de build **dinámico** (descubre las categorías del build).
