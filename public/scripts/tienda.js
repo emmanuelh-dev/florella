@@ -320,8 +320,9 @@
     });
   });
 
-  function openWhatsAppTo(number, message) {
+  function openWhatsAppTo(number, message, tipo = 'contacto') {
     if (!/^[1-9]\d{9,14}$/.test(number)) return;
+    window.umami?.track('whatsapp_click', { negocio: number === '528142547600' ? 'solo_ofrendas' : 'florella', tipo });
     window.open('https://wa.me/' + number + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
   }
   function openWhatsApp(message) { openWhatsAppTo(whatsapp, message); }
@@ -364,7 +365,7 @@
     const checkout = $('#checkout');
     if (checkout) checkout.disabled = true;
     try {
-      openWhatsAppTo(orderWhatsapp, lines.join('\n'));
+      openWhatsAppTo(orderWhatsapp, lines.join('\n'), 'carrito');
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
           send_to: 'AW-18532000410/g9ZiCOHou6cdEJrF34RF',

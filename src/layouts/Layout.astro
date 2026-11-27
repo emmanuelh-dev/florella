@@ -59,6 +59,16 @@ const negocio = {
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline defer src="https://umami.bysmax.com/script.js" data-website-id="79c96a28-3bc0-4ce8-81d6-9d8beb4a48f9"></script>
+    <script is:inline>
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest?.('a[href*="wa.me/"]');
+        if (!link) return;
+        const negocio = link.href.includes('528142547600') ? 'solo_ofrendas' : 'florella';
+        const tipo = link.matches('[data-product-whatsapp], [data-dialog-whatsapp]') ? 'producto' : 'contacto';
+        window.umami?.track('whatsapp_click', { negocio, tipo });
+      });
+    </script>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18532000410"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
