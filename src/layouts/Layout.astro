@@ -727,7 +727,9 @@ const negocio = {
             </a>
           )}
           <p class="text-[11px] text-muted">
-            Entrega en Monterrey y área metropolitana. Pide por WhatsApp.
+            {enSoloOfrendas
+              ? "Entrega en Monterrey y área metropolitana el mismo día, envío express de 1 a 3 horas. Pide por WhatsApp."
+              : "Entrega en Monterrey y área metropolitana. Pide por WhatsApp."}
           </p>
         </div>
       </div>
