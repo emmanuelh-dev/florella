@@ -4,7 +4,7 @@ Rastro corto de cambios. Lo más reciente arriba.
 
 ## 26 de noviembre de 2026 — Foto de la Corona Virgen de Gpe
 
-La foto nueva está vinculada a la ficha en Mímir. La compilación la convierte en WebP y la usa en el catálogo general y en Coronas; la ficha se verificó en navegador en escritorio y móvil. Se actualizó el respaldo de Solo Ofrendas. Publicación del sitio: verificar que el dominio sirva las imágenes nuevas después del despliegue.
+La foto nueva está vinculada a la ficha en Mímir. La compilación la convierte en WebP y la usa en el catálogo general y en Coronas; la ficha se verificó en navegador en escritorio y móvil. Se actualizó el respaldo de Solo Ofrendas. Cloudflare Workers publicó `e219f2c`: tanto el catálogo general como la página de Coronas sirven los WebP nuevos, idénticos a los de la compilación local. No hizo falta una purga manual; la compilación cambia la URL de cada variante.
 
 ## 2026-10
 - **Ficha del arreglo**: al tocar la foto se abre un modal con foto, nombre, precio y descripción (si el arreglo tiene); si no tiene, solo la foto. Navegación separada por catálogo (Florella vs Solo Ofrendas).
